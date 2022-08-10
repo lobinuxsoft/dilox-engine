@@ -33,3 +33,6 @@
 
 # Cosas del proyecto
 /Dilox_Engine/.vs
+.vs/
+Dilox_Engine/obj/
+Dilox_Engine/bin/
