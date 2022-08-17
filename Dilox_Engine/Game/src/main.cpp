@@ -1,6 +1,20 @@
-#include <BaseGame.h>
+#include <DiloxGE.h>
 
-void main()
+class Sandbox : public DiloxGE::BaseGame
 {
-	Run();
+	public:
+		Sandbox() { }
+		~Sandbox() { }
+};
+
+DiloxGE::BaseGame* DiloxGE::CreateBaseGame()
+{
+	return new Sandbox();
 }
+
+//void main()
+//{
+//	Sandbox* sandbox = new Sandbox();
+//	sandbox->Run();
+//	delete sandbox;
+//}
