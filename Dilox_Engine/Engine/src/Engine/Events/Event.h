@@ -3,11 +3,8 @@
 */
 
 #pragma once
-
+#include "dgepch.h"
 #include "Engine/Core.h"
-
-#include <string>
-#include <functional>
 
 namespace DiloxGE
 {

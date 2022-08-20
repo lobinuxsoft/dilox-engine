@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace DiloxGE
 {
 	class DGE_API KeyEvent : public Event

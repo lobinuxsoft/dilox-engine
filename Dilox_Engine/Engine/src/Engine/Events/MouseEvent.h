@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace DiloxGE
 {
 	class DGE_API MouseMovedEvent : public Event

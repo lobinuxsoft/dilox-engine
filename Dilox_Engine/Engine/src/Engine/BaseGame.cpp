@@ -1,3 +1,4 @@
+#include "dgepch.h"
 #include "BaseGame.h"
 
 #include "Engine/Events/ApplicationEvent.h"
