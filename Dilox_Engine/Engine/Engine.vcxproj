@@ -19,6 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Engine\Events\Event.h" />
+    <ClInclude Include="src\Engine\Events\KeyEvent.h" />
+    <ClInclude Include="src\Engine\Events\MouseEvent.h" />
     <ClInclude Include="src\Engine\Log.h" />
     <ClInclude Include="src\DiloxGE.h" />
     <ClInclude Include="src\Engine\BaseGame.h" />
