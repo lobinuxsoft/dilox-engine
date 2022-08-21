@@ -1,3 +1,7 @@
+/*
+* Basado en (para la abstracion de GLFW) https://www.youtube.com/watch?v=88dmtleVywk&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=11
+* Manejo de eventos en la ventana https://www.youtube.com/watch?v=r74WxFMIEdU&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=13
+*/
 #pragma once
 
 #include "Engine/Window.h"

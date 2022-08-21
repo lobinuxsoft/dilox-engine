@@ -1,6 +1,9 @@
 /*
 * Basado en https://www.youtube.com/watch?v=88dmtleVywk&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=11
 */
+/*
+Basado en (para la abstracion de GLFW) https://www.youtube.com/watch?v=88dmtleVywk&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=11
+*/
 #pragma once
 
 #include "dgepch.h"

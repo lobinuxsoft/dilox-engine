@@ -1,3 +1,6 @@
+/*
+Encabezados de precompilacion https://www.youtube.com/watch?v=UQ718BrbQ5E&list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT&index=10
+*/
 #pragma once
 
 #include <iostream>
