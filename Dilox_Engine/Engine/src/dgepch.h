@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Engine/Log.h"
+
 #ifdef DGE_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif // DGE_PLATFORM_WINDOWS

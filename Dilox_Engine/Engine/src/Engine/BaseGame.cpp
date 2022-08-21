@@ -4,10 +4,13 @@
 #include "Engine/Events/ApplicationEvent.h"
 #include "Engine/Log.h"
 
+#include <glfw3.h>
+
 namespace DiloxGE
 {
 	BaseGame::BaseGame()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 
 	BaseGame::~BaseGame()
@@ -16,17 +19,11 @@ namespace DiloxGE
 
 	void BaseGame::Run()
 	{
-		WindowResizeEvent e(1920, 1080);
-		if (e.IsInCategory(EventCategoryApplication))
+		while (m_Running)
 		{
-			DGE_TRACE(e);
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
 		}
-
-		if (e.IsInCategory(EventCategoryInput))
-		{
-			DGE_TRACE(e);
-		}
-
-		while (true);
 	}
 }

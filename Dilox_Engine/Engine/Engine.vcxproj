@@ -29,6 +29,8 @@
     <ClInclude Include="src\Engine\BaseGame.h" />
     <ClInclude Include="src\Engine\Core.h" />
     <ClInclude Include="src\Engine\EntryPoint.h" />
+    <ClInclude Include="src\Engine\Window.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dgepch.cpp">
@@ -43,6 +45,7 @@
     </ClCompile>
     <ClCompile Include="src\Engine\Log.cpp" />
     <ClCompile Include="src\Engine\BaseGame.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
