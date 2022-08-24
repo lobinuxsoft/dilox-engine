@@ -5,6 +5,8 @@
 #include "Engine/Events/ApplicationEvent.h"
 
 #include "Window.h"
+#include <Engine/Layer.h>
+#include <Engine/LayerStack.h>
 
 namespace DiloxGE
 {
@@ -16,6 +18,7 @@ namespace DiloxGE
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 
+		LayerStack m_LayerStack;
 	public:
 		BaseGame();
 		virtual ~BaseGame();
@@ -23,6 +26,9 @@ namespace DiloxGE
 		void Run();
 
 		void OnEvent(Event& e);
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
 	};
 
 	// To be defined in client
