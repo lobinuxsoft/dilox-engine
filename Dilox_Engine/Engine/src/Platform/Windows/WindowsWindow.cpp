@@ -34,7 +34,7 @@ namespace DiloxGE
 
 		DGE_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (!s_GLFWInitialized)
+		if (!s_GLFWInitialized) //Inicializa GLFW
 		{
 			// TODO: glfwTerminate on system shutdown
 			int success = glfwInit();
