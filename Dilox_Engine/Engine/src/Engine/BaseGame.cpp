@@ -12,7 +12,7 @@ namespace DiloxGE
 
 	BaseGame::BaseGame()
 	{
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = std::unique_ptr<Window>(Window::Create()); //Crea un entry point
 		m_Window->SetEventCallback(BIND_EVENT_FN(BaseGame::OnEvent));
 	}
 
