@@ -26,6 +26,7 @@ project "Engine"
 
     includedirs
     {
+        "%{prj.name}/src",
         "%{prj.name}/libs/spdlog/include"
     }
 
