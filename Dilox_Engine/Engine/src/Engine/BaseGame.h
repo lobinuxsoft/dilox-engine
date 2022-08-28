@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Core.h"
+#include "Window.h"
+#include <Engine/LayerStack.h>
 #include "Events/Event.h"
 #include "Engine/Events/ApplicationEvent.h"
 
-#include "Window.h"
-#include <Engine/Layer.h>
-#include <Engine/LayerStack.h>
+//#include <Engine/Layer.h>
 
 namespace DiloxGE
 {
@@ -19,6 +19,7 @@ namespace DiloxGE
 		bool m_Running = true;
 
 		LayerStack m_LayerStack;
+
 	public:
 		BaseGame();
 		virtual ~BaseGame();

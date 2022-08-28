@@ -3,6 +3,7 @@
 // For use by DiloxGE applications
 
 #include "Engine/BaseGame.h"
+#include "Engine/Layer.h"
 #include "Engine/Log.h"
 
 // Entry Point---------
