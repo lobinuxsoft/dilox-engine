@@ -10,10 +10,17 @@ workspace "Dilox_Engine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["glfw"] = "Engine/libs/glfw/include"
+
+include "Engine/libs/glfw"
+
 project "Engine"
     location "Engine"
     kind "SharedLib"
     language "C++"
+    cppdialect "C++latest"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -30,7 +37,14 @@ project "Engine"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/libs/spdlog/include"
+        "%{prj.name}/libs/spdlog/include",
+        "%{IncludeDir.glfw}"
+    }
+
+    links
+    {
+        "glfw",
+        "opengl32.lib"
     }
 
     filter "system:windows"
@@ -50,20 +64,24 @@ project "Engine"
 
     filter "configurations:Debug"
         defines "DGE_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "DGE_RELEASE"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DGE_DIST"
+        buildoptions "/MD"
         optimize "On"
 
 project "Game"
         location "Game"
         kind "ConsoleApp"
         language "C++"
+        cppdialect "C++latest"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -96,12 +114,15 @@ project "Game"
 
     filter "configurations:Debug"
         defines "DGE_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "DGE_RELEASE"
+        buildoptions "/MD"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DGE_DIST"
+        buildoptions "/MD"
         optimize "On"

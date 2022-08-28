@@ -2,3 +2,6 @@
 	path = Dilox_Engine/Engine/libs/spdlog
 	url = https://github.com/gabime/spdlog.git
 	branch = v1.x
+[submodule "Dilox_Engine/Engine/libs/glfw"]
+	path = Dilox_Engine/Engine/libs/glfw
+	url = https://github.com/lobinuxsoft/glfw

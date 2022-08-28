@@ -39,3 +39,4 @@ Dilox_Engine/bin/
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.vcxproj.user
