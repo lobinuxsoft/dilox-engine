@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["glfw"] = "Engine/libs/glfw/include"
+IncludeDir["glad"] = "Engine/libs/glad/include"
 
 include "Engine/libs/glfw"
+include "Engine/libs/glad"
 
 project "Engine"
     location "Engine"
@@ -38,12 +40,14 @@ project "Engine"
     {
         "%{prj.name}/src",
         "%{prj.name}/libs/spdlog/include",
-        "%{IncludeDir.glfw}"
+        "%{IncludeDir.glfw}",
+        "%{IncludeDir.glad}"
     }
 
     links
     {
         "glfw",
+        "glad",
         "opengl32.lib"
     }
 
@@ -54,7 +58,8 @@ project "Engine"
         defines
         {
             "DGE_PLATFORM_WINDOWS",
-            "DGE_BUILD_DLL"
+            "DGE_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands
