@@ -40,3 +40,6 @@ Dilox_Engine/bin/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*bin/
+*bin-int/
+*obj/
