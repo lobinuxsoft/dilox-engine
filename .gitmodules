@@ -5,3 +5,6 @@
 [submodule "Dilox_Engine/Engine/libs/glfw"]
 	path = Dilox_Engine/Engine/libs/glfw
 	url = https://github.com/lobinuxsoft/glfw
+[submodule "Dilox_Engine/Engine/libs/imgui"]
+	path = Dilox_Engine/Engine/libs/imgui
+	url = https://github.com/lobinuxsoft/imgui.git

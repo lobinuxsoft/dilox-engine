@@ -20,6 +20,8 @@ namespace DiloxGE
 
 		LayerStack m_LayerStack;
 
+		static BaseGame* s_Instance;
+
 	public:
 		BaseGame();
 		virtual ~BaseGame();
@@ -30,6 +32,10 @@ namespace DiloxGE
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
+
+		inline static BaseGame& Get() { return *s_Instance; }
+
+		inline Window& GetWindow() { return *m_Window; }
 	};
 
 	// To be defined in client

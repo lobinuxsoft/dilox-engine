@@ -25,6 +25,7 @@ class Sandbox : public DiloxGE::BaseGame
 		Sandbox() 
 		{
 			PushLayer(new ExampleLayer());
+			PushOverlay(new DiloxGE::ImGuiLayer());
 		}
 		~Sandbox() { }
 };
