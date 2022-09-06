@@ -10,13 +10,11 @@ namespace DiloxGE
 	class WindowsInput : public Input
 	{
 	protected:
-		virtual bool IsKeyPressedImpl(int keycode) override
-		{
-			auto window = static_cast<GLFWwindow*>(BaseGame::Get().GetWindow().GetNativeWindow());
-			auto state = glfwGetKey(window, keycode);
+		virtual bool IsKeyPressedImpl(int keycode) override;
+		virtual bool IsMouseButtonPressedImpl(int button) override;
 
-			return state == GLFW_PRESS || state == GLFW_REPEAT;
-		}
-
+		virtual std::pair<float, float> GetMousePositionImpl() override;
+		virtual float GetMouseXImpl() override;
+		virtual float GetMouseYImpl() override;
 	};
 }
