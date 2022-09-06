@@ -1,6 +1,6 @@
 #pragma once
 #include "dgepch.h"
-#include "Input.h" 
+#include "Engine/Input.h"
 
 #include "GLFW/glfw3.h"
 #include "Engine/BaseGame.h"
