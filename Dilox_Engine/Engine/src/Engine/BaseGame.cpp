@@ -37,7 +37,7 @@ namespace DiloxGE
 			}
 
 			auto [x, y] = Input::GetMousePosition();
-			DGE_CORE_TRACE("{0}", "{1}", x, y);
+			//DGE_CORE_TRACE("{0}", "{1}", x, y);
 
 			m_Window->OnUpdate();
 		}
