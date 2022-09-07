@@ -8,3 +8,6 @@
 [submodule "Dilox_Engine/Engine/libs/imgui"]
 	path = Dilox_Engine/Engine/libs/imgui
 	url = https://github.com/lobinuxsoft/imgui.git
+[submodule "Dilox_Engine/Engine/libs/glm"]
+	path = Dilox_Engine/Engine/libs/glm
+	url = https://github.com/g-truc/glm

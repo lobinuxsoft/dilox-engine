@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["glfw"] = "Engine/libs/glfw/include"
 IncludeDir["glad"] = "Engine/libs/glad/include"
 IncludeDir["imgui"] = "Engine/libs/imgui"
+IncludeDir["glm"] = "Engine/libs/glm"
 
 include "Engine/libs/glfw"
 include "Engine/libs/glad"
@@ -37,7 +38,9 @@ project "Engine"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/libs/glm/glm/**.hpp",
+        "%{prj.name}/libs/glm/glm/**.inl"
     }
 
     includedirs
@@ -46,7 +49,8 @@ project "Engine"
         "%{prj.name}/libs/spdlog/include",
         "%{IncludeDir.glfw}",
         "%{IncludeDir.glad}",
-        "%{IncludeDir.imgui}"
+        "%{IncludeDir.imgui}",
+        "%{IncludeDir.glm}"
     }
 
     links
@@ -102,13 +106,14 @@ project "Game"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
     }
 
     includedirs
     {
         "Engine/libs/spdlog/include",
-        "Engine/src"
+        "Engine/src",
+        "%{IncludeDir.glm}"
     }
 
     links
