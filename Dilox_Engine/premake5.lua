@@ -1,6 +1,7 @@
 workspace "Dilox_Engine"
     architecture "x86"
-
+    startproject "Game"
+    
     configurations
     {
         "Debug",
