@@ -43,3 +43,4 @@ Dilox_Engine/bin/
 *bin/
 *bin-int/
 *obj/
+*imgui.ini

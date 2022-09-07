@@ -1,7 +1,7 @@
 workspace "Dilox_Engine"
     architecture "x86"
     startproject "Game"
-    
+
     configurations
     {
         "Debug",
@@ -26,6 +26,7 @@ project "Engine"
     kind "SharedLib"
     language "C++"
     cppdialect "C++latest"
+    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -57,7 +58,8 @@ project "Engine"
     }
 
     filter "system:windows"
-        staticruntime "On"
+        cppdialect "C++latest"
+        staticruntime "off"
         systemversion "latest"
 
         defines
@@ -74,17 +76,17 @@ project "Engine"
 
     filter "configurations:Debug"
         defines "DGE_DEBUG"
-        buildoptions "/MDd"
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"
         defines "DGE_RELEASE"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DGE_DIST"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
 
 project "Game"
@@ -92,6 +94,7 @@ project "Game"
         kind "ConsoleApp"
         language "C++"
         cppdialect "C++latest"
+        staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -114,7 +117,7 @@ project "Game"
     }
 
     filter "system:windows"
-        staticruntime "On"
+        cppdialect "C++latest"
         systemversion "latest"
 
         defines
@@ -124,15 +127,15 @@ project "Game"
 
     filter "configurations:Debug"
         defines "DGE_DEBUG"
-        buildoptions "/MDd"
+        runtime "Debug"
         symbols "On"
 
     filter "configurations:Release"
         defines "DGE_RELEASE"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
 
     filter "configurations:Dist"
         defines "DGE_DIST"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
