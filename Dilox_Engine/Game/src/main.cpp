@@ -20,6 +20,13 @@ public:
 		}
 	}
 
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello world");
+		ImGui::End();
+	}
+
 	void OnEvent(DiloxGE::Event& event) override
 	{
 		if (event.GetEventType() == DiloxGE::EventType::KeyPressed)
