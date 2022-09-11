@@ -24,10 +24,10 @@ include "Engine/libs/imgui"
 
 project "Engine"
     location "Engine"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++latest"
-    staticruntime "off"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -41,6 +41,11 @@ project "Engine"
         "%{prj.name}/src/**.cpp",
         "%{prj.name}/libs/glm/glm/**.hpp",
         "%{prj.name}/libs/glm/glm/**.inl"
+    }
+
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     includedirs
@@ -62,8 +67,6 @@ project "Engine"
     }
 
     filter "system:windows"
-        cppdialect "C++latest"
-        staticruntime "off"
         systemversion "latest"
 
         defines
@@ -73,32 +76,27 @@ project "Engine"
             "GLFW_INCLUDE_NONE"
         }
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Game/\"")
-        }
-
     filter "configurations:Debug"
         defines "DGE_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"
         defines "DGE_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "DGE_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
 project "Game"
         location "Game"
         kind "ConsoleApp"
         language "C++"
         cppdialect "C++latest"
-        staticruntime "off"
+        staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -123,7 +121,6 @@ project "Game"
     }
 
     filter "system:windows"
-        cppdialect "C++latest"
         systemversion "latest"
 
         defines
@@ -134,14 +131,14 @@ project "Game"
     filter "configurations:Debug"
         defines "DGE_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
 
     filter "configurations:Release"
         defines "DGE_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
     filter "configurations:Dist"
         defines "DGE_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"
