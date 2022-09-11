@@ -1,5 +1,7 @@
 #include <DiloxGE.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public DiloxGE::Layer
 {
 public:
@@ -34,7 +36,6 @@ class Sandbox : public DiloxGE::BaseGame
 		Sandbox() 
 		{
 			PushLayer(new ExampleLayer());
-			PushOverlay(new DiloxGE::ImGuiLayer());
 		}
 		~Sandbox() { }
 };

@@ -25,6 +25,8 @@ namespace DiloxGE
 		///</summary>
 		virtual void OnUpdate() {}
 
+		virtual void OnImGuiRender() {}
+
 		///<summary>
 		///Cuando se envia un evento al layer, se recibe aca
 		///</summary>

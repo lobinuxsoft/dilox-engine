@@ -113,6 +113,7 @@ project "Game"
     {
         "Engine/libs/spdlog/include",
         "Engine/src",
+        "Engine/libs",
         "%{IncludeDir.glm}"
     }
 
