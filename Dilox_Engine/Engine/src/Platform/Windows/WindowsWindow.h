@@ -5,8 +5,10 @@
 #pragma once
 
 #include "Engine/Window.h"
+#include "Engine/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
+
 
 namespace DiloxGE
 {
@@ -16,6 +18,7 @@ namespace DiloxGE
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{
