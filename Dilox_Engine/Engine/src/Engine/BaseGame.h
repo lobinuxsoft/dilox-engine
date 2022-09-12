@@ -21,6 +21,8 @@ namespace DiloxGE
 
 		LayerStack m_LayerStack;
 
+		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+
 		static BaseGame* s_Instance;
 
 	public:
