@@ -6,7 +6,7 @@ struct GLFWwindow;
 
 namespace DiloxGE
 {
-	class DGE_API OpenGLContext : public GraphicsContext
+	class OpenGLContext : public GraphicsContext
 	{
 	private:
 		GLFWwindow* m_WindowHandle;

@@ -8,6 +8,8 @@
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
+#include "Engine/Renderer/Shader.h"
+
 namespace DiloxGE
 {
 	class DGE_API BaseGame
@@ -22,6 +24,7 @@ namespace DiloxGE
 		LayerStack m_LayerStack;
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::unique_ptr<Shader> m_Shader;
 
 		static BaseGame* s_Instance;
 
