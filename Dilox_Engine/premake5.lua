@@ -24,10 +24,10 @@ include "Engine/libs/imgui"
 
 project "Engine"
     location "Engine"
-    kind "StaticLib"
+    kind "SharedLib"
     language "C++"
     cppdialect "C++latest"
-    staticruntime "on"
+    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -76,6 +76,11 @@ project "Engine"
             "GLFW_INCLUDE_NONE"
         }
 
+        postbuildcommands
+        {
+            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Game/\"")
+        }
+
     filter "configurations:Debug"
         defines "DGE_DEBUG"
         runtime "Debug"
@@ -96,7 +101,7 @@ project "Game"
         kind "ConsoleApp"
         language "C++"
         cppdialect "C++latest"
-        staticruntime "on"
+        staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("obj/" .. outputdir .. "/%{prj.name}")
