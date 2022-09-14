@@ -12,7 +12,7 @@
 
 namespace DiloxGE
 {
-	class WindowsWindow : public Window
+	class DGE_API WindowsWindow : public Window
 	{
 	private:
 		virtual void Init(const WindowProps& props);

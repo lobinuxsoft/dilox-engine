@@ -7,7 +7,7 @@
 
 namespace DiloxGE
 {
-	class WindowsInput : public Input
+	class DGE_API WindowsInput : public Input
 	{
 	protected:
 		virtual bool IsKeyPressedImpl(int keycode) override;
