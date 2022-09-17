@@ -13,6 +13,27 @@ namespace DiloxGE
 
 	BaseGame* BaseGame::s_Instance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+			case DiloxGE::ShaderDataType::Float:	return GL_FLOAT;
+			case DiloxGE::ShaderDataType::Float2:	return GL_FLOAT;
+			case DiloxGE::ShaderDataType::Float3:	return GL_FLOAT;
+			case DiloxGE::ShaderDataType::Float4:	return GL_FLOAT;
+			case DiloxGE::ShaderDataType::Mat3:		return GL_FLOAT;
+			case DiloxGE::ShaderDataType::Mat4:		return GL_FLOAT;
+			case DiloxGE::ShaderDataType::Int:		return GL_INT;
+			case DiloxGE::ShaderDataType::Int2:		return GL_INT;
+			case DiloxGE::ShaderDataType::Int3:		return GL_INT;
+			case DiloxGE::ShaderDataType::Int4:		return GL_INT;
+			case DiloxGE::ShaderDataType::Bool:		return GL_BOOL;
+		}
+
+		DGE_CORE_ASSERT(false, "Unknoen ShaderDataType!");
+		return 0;
+	}
+
 	BaseGame::BaseGame()
 	{
 		DGE_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -28,17 +49,43 @@ namespace DiloxGE
 		glGenVertexArrays(1, &m_VertexArray);
 		glBindVertexArray(m_VertexArray);
 
-		float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
+		float vertices[3 * 7] = {
+			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+			0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+			0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
+		{
+			BufferLayout layout = {
+				{ ShaderDataType::Float3, "a_Position"},
+				{ ShaderDataType::Float4, "a_Color"}
+			};
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+			m_VertexBuffer->SetLayout(layout);
+		}
+
+		uint32_t index = 0;
+
+		const auto& layaout = m_VertexBuffer->GetLayout();
+
+		for (const auto& element : layaout)
+		{
+			glEnableVertexAttribArray(index);
+
+			glVertexAttribPointer(
+				index,
+				element.GetComponentCount(),
+				ShaderDataTypeToOpenGLBaseType(element.Type),
+				element.Normalized ? GL_TRUE : GL_FALSE,
+				layaout.GetStride(),
+				(const void*)element.Offset
+			);
+
+			index++;
+		}
+
 
 		unsigned int indices[3] = { 0,1,2 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
@@ -47,12 +94,15 @@ namespace DiloxGE
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec4 a_Color;
 			
 			out vec3 v_Position;
+			out vec4 v_Color;
 
 			void main()
 			{
 				v_Position = a_Position;
+				v_Color = a_Color;
 				gl_Position = vec4(a_Position, 1.0);
 			}
 		)";
@@ -63,10 +113,12 @@ namespace DiloxGE
 			layout(location = 0) out vec4 color;
 			
 			in vec3 v_Position;
+			in vec4 v_Color;
 
 			void main()
 			{
 				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				color = v_Color;
 			}
 		)";
 
@@ -141,6 +193,4 @@ namespace DiloxGE
 			}
 		}
 	}
-
-
 }

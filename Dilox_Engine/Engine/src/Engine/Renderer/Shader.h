@@ -3,7 +3,7 @@
 
 namespace DiloxGE
 {
-	class Shader
+	class DGE_API Shader
 	{
 	private:
 		uint32_t m_RendererID;

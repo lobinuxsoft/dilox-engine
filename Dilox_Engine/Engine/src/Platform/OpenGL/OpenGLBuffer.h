@@ -4,10 +4,11 @@
 
 namespace DiloxGE
 {
-	class OpenGLVertexBuffer : public VertexBuffer
+	class DGE_API OpenGLVertexBuffer : public VertexBuffer
 	{
 	private:
 		uint32_t m_RendererID;
+		BufferLayout m_Layout;
 
 	public:
 		OpenGLVertexBuffer(float* vertices, uint32_t size);
@@ -15,9 +16,12 @@ namespace DiloxGE
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual const BufferLayout& GetLayout() const override { return m_Layout; }
+		virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
 	};
 
-	class OpenGLIndexBuffer : public IndexBuffer
+	class DGE_API OpenGLIndexBuffer : public IndexBuffer
 	{
 	private:
 		uint32_t m_RendererID;

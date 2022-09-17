@@ -2,7 +2,7 @@
 
 namespace DiloxGE
 {
-	class GraphicsContext
+	class DGE_API GraphicsContext
 	{
 	public:
 		virtual void Init() = 0;

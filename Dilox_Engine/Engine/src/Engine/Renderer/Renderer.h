@@ -2,12 +2,12 @@
 
 namespace DiloxGE
 {
-	enum class RendererAPI
+	enum class DGE_API RendererAPI
 	{
 		None = 0, OpenGL = 1
 	};
 
-	class Renderer
+	class DGE_API Renderer
 	{
 	public:
 		inline static RendererAPI GetAPI() { return s_RendererAPI; }
