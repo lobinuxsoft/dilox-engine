@@ -4,7 +4,7 @@
 
 namespace DiloxGE
 {
-	class DGE_API OpenGLVertexBuffer : public VertexBuffer
+	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	private:
 		uint32_t m_RendererID;
@@ -21,7 +21,7 @@ namespace DiloxGE
 		virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
 	};
 
-	class DGE_API OpenGLIndexBuffer : public IndexBuffer
+	class OpenGLIndexBuffer : public IndexBuffer
 	{
 	private:
 		uint32_t m_RendererID;

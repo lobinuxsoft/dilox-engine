@@ -13,27 +13,6 @@ namespace DiloxGE
 
 	BaseGame* BaseGame::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-			case DiloxGE::ShaderDataType::Float:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Float2:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Float3:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Float4:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Mat3:		return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Mat4:		return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Int:		return GL_INT;
-			case DiloxGE::ShaderDataType::Int2:		return GL_INT;
-			case DiloxGE::ShaderDataType::Int3:		return GL_INT;
-			case DiloxGE::ShaderDataType::Int4:		return GL_INT;
-			case DiloxGE::ShaderDataType::Bool:		return GL_BOOL;
-		}
-
-		DGE_CORE_ASSERT(false, "Unknoen ShaderDataType!");
-		return 0;
-	}
-
 	BaseGame::BaseGame()
 	{
 		DGE_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -45,9 +24,17 @@ namespace DiloxGE
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		// El proceso de dibujar un triangulo
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
+		// El proceso de dibujar un triangulo, el orden es importante de como se realizan las cosas
+		// 1-Se crea el Vertex Array para poder conectar el Vertex Buffer
+		// 2-Se setean los datos necesarios
+		// 3-Se crea el Vertex Buffer
+		// 4-S crea el Buffer Layout (sirve para poder conocer el Stride y el Offset de los datos)
+		// 5-Se setea el Buffer Layout al Vertex Buffer
+		// 6-Se agrega el Vertex Buffer al Vertex Array
+		// 7-Se crea el Index Buffer y se lo conecta el Vertex Array
+		// 8-Se crea el Shader
+
+		m_VertexArray.reset(VertexArray::Create());
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -55,40 +42,42 @@ namespace DiloxGE
 			0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		BufferLayout layout = {
+			{ ShaderDataType::Float3, "a_Position"},
+			{ ShaderDataType::Float4, "a_Color"}
+		};
 
-		{
-			BufferLayout layout = {
-				{ ShaderDataType::Float3, "a_Position"},
-				{ ShaderDataType::Float4, "a_Color"}
-			};
+		vertexBuffer->SetLayout(layout);
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-			m_VertexBuffer->SetLayout(layout);
-		}
+		uint32_t indices[3] = { 0,1,2 };
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		uint32_t index = 0;
+		m_SquareVA.reset(VertexArray::Create());
 
-		const auto& layaout = m_VertexBuffer->GetLayout();
+		float squareVertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f, 
+			 0.75f,  0.75f, 0.0f,
+			-0.75f,  0.75f, 0.0f
+		};
 
-		for (const auto& element : layaout)
-		{
-			glEnableVertexAttribArray(index);
+		std::shared_ptr<VertexBuffer> squareVB;
+		squareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
-			glVertexAttribPointer(
-				index,
-				element.GetComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				layaout.GetStride(),
-				(const void*)element.Offset
-			);
+		squareVB->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" }
+		});
+		m_SquareVA->AddVertexBuffer(squareVB);
 
-			index++;
-		}
-
-
-		unsigned int indices[3] = { 0,1,2 };
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
+		std::shared_ptr<IndexBuffer> squareIB;
+		squareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -123,6 +112,35 @@ namespace DiloxGE
 		)";
 
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+		std::string blueShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			
+			out vec3 v_Position;
+
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string blueShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+			
+			in vec3 v_Position;
+
+			void main()
+			{
+				color = vec4(0.2, 0.3, 0.8, 1.0);
+			}
+		)";
+
+		m_BlueShader.reset(new Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
 	}
 
 	BaseGame::~BaseGame() { }
@@ -134,9 +152,13 @@ namespace DiloxGE
 			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			m_BlueShader->Bind();
+			m_SquareVA->Bind();
+			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
 			m_Shader->Bind();
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_VertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : m_LayerStack)
 			{
