@@ -5,6 +5,7 @@
 #include "OrthographicCamera.h"
 #include "Shader.h"
 
+
 namespace DiloxGE
 {
 	class DGE_API Renderer
