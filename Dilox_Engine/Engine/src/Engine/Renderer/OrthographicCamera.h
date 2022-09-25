@@ -3,7 +3,7 @@
 
 namespace DiloxGE
 {
-	class OrthographicCamera
+	class DGE_API OrthographicCamera
 	{
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top);

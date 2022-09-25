@@ -64,6 +64,9 @@ namespace DiloxGE
 	public:
 		EventDispatcher(Event& event) : m_Event(event) { }
 
+		/// <summary>
+		/// Devuelve el valor true si el evento que se espera es el ejecutado
+		/// </summary>
 		template<typename T>
 		bool Dispatch(EventFn<T> func)
 		{
