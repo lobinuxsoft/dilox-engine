@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "Engine/Core/Timestep.h"
 #include "Events/Event.h"
 
 namespace DiloxGE
@@ -23,7 +24,7 @@ namespace DiloxGE
 		///<summary>
 		///Ocurre cada frame
 		///</summary>
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep ts) {}
 
 		virtual void OnImGuiRender() {}
 

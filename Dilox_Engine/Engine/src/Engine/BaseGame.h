@@ -6,6 +6,8 @@
 #include "Events/Event.h"
 #include "Engine/Events/ApplicationEvent.h"
 
+#include "Engine/Core/Timestep.h"
+
 #include "Engine/ImGui/ImGuiLayer.h"
 
 namespace DiloxGE
@@ -20,6 +22,7 @@ namespace DiloxGE
 		bool m_Running = true;
 
 		LayerStack m_LayerStack;
+		float m_LastFrameTime = 0.0f;
 
 		static BaseGame* s_Instance;
 
