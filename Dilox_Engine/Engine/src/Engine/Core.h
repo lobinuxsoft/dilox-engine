@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef DGE_PLATFORM_WINDOWS
 	#ifdef DGE_BUILD_DLL
 		#define DGE_API __declspec(dllexport)
@@ -26,3 +28,12 @@
 #define BIT(x) (1 << x)
 
 #define DGE_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace DiloxGE
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}

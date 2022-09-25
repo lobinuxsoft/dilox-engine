@@ -11,7 +11,7 @@ namespace DiloxGE
 
 		inline static void Clear() { s_RendererAPI->Clear(); }
 
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) { s_RendererAPI->DrawIndexed(vertexArray); }
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RendererAPI->DrawIndexed(vertexArray); }
 
 	private:
 		static RendererAPI* s_RendererAPI;
