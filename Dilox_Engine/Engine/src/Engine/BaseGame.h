@@ -8,12 +8,6 @@
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
-#include "Engine/Renderer/Shader.h"
-#include "Engine/Renderer/Buffer.h"
-#include "Engine/Renderer/VertexArray.h"
-
-#include "Engine/Renderer/OrthographicCamera.h"
-
 namespace DiloxGE
 {
 	class DGE_API BaseGame
