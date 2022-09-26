@@ -4,10 +4,19 @@
 #include "Engine/Log.h"
 #include "Engine/Input.h"
 
+#include "Tools/Renderer2D.h"
+
 #include <glad/glad.h>
+#include <Tools/Triangle.h>
 
 namespace DiloxGE
 {
+	float vertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.0f, 0.5f, 0.0f
+	};
+
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
@@ -15,6 +24,8 @@ namespace DiloxGE
 
 	BaseGame::BaseGame()
 	{
+		renderer2D = new Renderer2D();
+
 		DGE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -25,31 +36,12 @@ namespace DiloxGE
 		PushOverlay(m_ImGuiLayer);
 
 		// El proceso de dibujar un triangulo
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
-
-		glGenBuffers(1, &m_VertexBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
-		float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
-		};
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-
-		glGenBuffers(1, &m_IndexBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-
-		unsigned int indices[3] = { 0,1,2 };
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		Triangle* triangle = new Triangle(renderer2D, vertices, true);
 	}
 
-	BaseGame::~BaseGame() { }
+	BaseGame::~BaseGame() 
+	{
+	}
 
 	void BaseGame::Run()
 	{
@@ -77,6 +69,8 @@ namespace DiloxGE
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
+
+			Update();
 		}
 	}
 

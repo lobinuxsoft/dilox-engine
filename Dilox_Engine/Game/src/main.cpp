@@ -42,9 +42,27 @@ class Sandbox : public DiloxGE::BaseGame
 	public:
 		Sandbox() 
 		{
+			Begin();
 			PushLayer(new ExampleLayer());
 		}
-		~Sandbox() { }
+		~Sandbox() 
+		{
+			End();
+		}
+
+		void Begin() override
+		{
+			
+		}
+
+		void Update() override
+		{
+
+		}
+		void End() override
+		{
+
+		}
 };
 
 DiloxGE::BaseGame* DiloxGE::CreateBaseGame()

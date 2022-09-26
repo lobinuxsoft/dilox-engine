@@ -1,9 +1,11 @@
 #pragma once
 #include <Tools/Renderer2D.h>
+#include "Tools/Entity.h"
 
 namespace DiloxGE
 {
-	class Shape
+	class Shape :
+		public Entity
 	{
 	private:
 		float* vertexPosition;
@@ -21,7 +23,7 @@ namespace DiloxGE
 		{
 			return vertexPosition;
 		}
-		int getVertexCount()
+		int GetVertexCount()
 		{
 			return vertexCount;
 		}
