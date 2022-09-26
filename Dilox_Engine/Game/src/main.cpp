@@ -175,6 +175,7 @@ public:
 		m_TextureShader.reset(DiloxGE::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
 		m_Texture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_CryingOnionTexture = DiloxGE::Texture2D::Create("assets/textures/CryingOnionLogo.png");
 
 		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -223,6 +224,9 @@ public:
 		m_Texture->Bind();
 		DiloxGE::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
+		m_CryingOnionTexture->Bind();
+		DiloxGE::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(2.5f, 1.0f, 0.0f)));
+
 		// Triangle
 		//DiloxGE::Renderer::Submit(m_Shader, m_VertexArray);
 
@@ -248,7 +252,7 @@ private:
 	DiloxGE::Ref<DiloxGE::Shader> m_FlatColorShader, m_TextureShader;
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
 
-	DiloxGE::Ref<DiloxGE::Texture2D> m_Texture;
+	DiloxGE::Ref<DiloxGE::Texture2D> m_Texture, m_CryingOnionTexture; // CryingOnionLogo.png
 
 	DiloxGE::OrthographicCamera m_Camera;
 

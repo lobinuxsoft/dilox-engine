@@ -24,6 +24,8 @@ namespace DiloxGE
 		m_Window = Scope<Window>(Window::Create()); //Aca podes pasarle los valores que quieras a la ventana, creando un WindowProps
 		m_Window->SetEventCallback(BIND_EVENT_FN(BaseGame::OnEvent));
 
+		Renderer::Init();
+
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 	}
