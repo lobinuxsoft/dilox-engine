@@ -47,18 +47,19 @@ public:
 
 		m_SquareVA.reset(DiloxGE::VertexArray::Create());
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		DiloxGE::Ref<DiloxGE::VertexBuffer> squareVB;
 		squareVB.reset(DiloxGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
 		squareVB->SetLayout({
-			{ DiloxGE::ShaderDataType::Float3, "a_Position" }
+			{ DiloxGE::ShaderDataType::Float3, "a_Position" },
+			{ DiloxGE::ShaderDataType::Float2, "a_TexCoord" }
 			});
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -137,6 +138,46 @@ public:
 		)";
 
 		m_FlatColorShader.reset(DiloxGE::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+			
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+			
+			in vec2 v_TexCoord;
+			
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)";
+
+		m_TextureShader.reset(DiloxGE::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+		m_Texture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
+
+		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_TextureShader)->Bind();
+		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(DiloxGE::Timestep ts) override
@@ -179,7 +220,11 @@ public:
 			}
 		}
 
-		DiloxGE::Renderer::Submit(m_Shader, m_VertexArray);
+		m_Texture->Bind();
+		DiloxGE::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		// Triangle
+		//DiloxGE::Renderer::Submit(m_Shader, m_VertexArray);
 
 		DiloxGE::Renderer::EndScene();
 	}
@@ -200,8 +245,10 @@ private:
 	DiloxGE::Ref<DiloxGE::Shader> m_Shader;
 	DiloxGE::Ref<DiloxGE::VertexArray> m_VertexArray;
 
-	DiloxGE::Ref<DiloxGE::Shader> m_FlatColorShader;
+	DiloxGE::Ref<DiloxGE::Shader> m_FlatColorShader, m_TextureShader;
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
+
+	DiloxGE::Ref<DiloxGE::Texture2D> m_Texture;
 
 	DiloxGE::OrthographicCamera m_Camera;
 

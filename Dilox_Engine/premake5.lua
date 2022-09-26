@@ -17,6 +17,7 @@ IncludeDir["glfw"] = "Engine/libs/glfw/include"
 IncludeDir["glad"] = "Engine/libs/glad/include"
 IncludeDir["imgui"] = "Engine/libs/imgui"
 IncludeDir["glm"] = "Engine/libs/glm"
+IncludeDir["stb_image"] = "Engine/libs/stb_image"
 
 include "Engine/libs/glfw"
 include "Engine/libs/glad"
@@ -39,6 +40,8 @@ project "Engine"
     {
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
+        "%{prj.name}/libs/stb_image/**.h",
+        "%{prj.name}/libs/stb_image/**.cpp",
         "%{prj.name}/libs/glm/glm/**.hpp",
         "%{prj.name}/libs/glm/glm/**.inl"
     }
@@ -55,7 +58,8 @@ project "Engine"
         "%{IncludeDir.glfw}",
         "%{IncludeDir.glad}",
         "%{IncludeDir.imgui}",
-        "%{IncludeDir.glm}"
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.stb_image}"
     }
 
     links
