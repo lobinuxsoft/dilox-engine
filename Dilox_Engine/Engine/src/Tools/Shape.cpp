@@ -5,7 +5,7 @@ namespace DiloxGE
 {
 	Shape::Shape(Renderer2D* renderer2D) : Entity2D(renderer2D)
 	{
-
+		this->renderer2D = renderer2D;
 	}
 
 	Shape::~Shape()
