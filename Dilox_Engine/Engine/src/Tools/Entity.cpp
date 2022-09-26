@@ -13,33 +13,33 @@ namespace DiloxGE
 
 	}
 
-	void Entity::SetPosition(Coordinates newPos)
+	void Entity::SetPosition(Position newPos)
 	{
-		pos = newPos;
+		transform.position = newPos;
 	}
 
-	Coordinates Entity::GetPosition()
+	Position Entity::GetPosition()
 	{
-		return pos;
+		return transform.position;
 	}
 
-	void Entity::SetRotation(Coordinates newRotation)
+	void Entity::SetRotation(Quaternion newRotation)
 	{
-		rotation = newRotation;
+		transform.rotation = newRotation;
 	}
 
-	Coordinates Entity::GetRotation()
+	Quaternion Entity::GetRotation()
 	{
-		return rotation;
+		return transform.rotation;
 	}
 
-	void Entity::SetScale(Coordinates newScale)
+	void Entity::SetScale(Scale newScale)
 	{
-		scale = newScale;
+		transform.scale = newScale;
 	}
 
-	Coordinates Entity::GetScale()
+	Scale Entity::GetScale()
 	{
-		return scale;
+		return transform.scale;
 	}
 }

@@ -3,7 +3,7 @@
 
 namespace DiloxGE
 {
-	Triangle::Triangle(Renderer2D* renderer2D, float vertexPos[3 * 3], bool isStatic) : Entity(renderer2D)
+	Triangle::Triangle(Renderer2D* renderer2D, float vertexPos[3 * 3], bool isStatic) : Entity2D(renderer2D)
 	{
 		this->renderer2D = renderer2D;
 		this->vertexPos[3 * 3] = vertexPos;
@@ -14,6 +14,7 @@ namespace DiloxGE
 	{
 
 	}
+
 	void Triangle::Draw()
 	{
 		renderer2D->DrawTriangle(vertexPos[3 * 3]);

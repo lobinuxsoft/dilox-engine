@@ -10,7 +10,6 @@ namespace DiloxGE
 	public:
 		Entity2D(Renderer2D* renderer);
 		~Entity2D();
-
 	};
 }
 

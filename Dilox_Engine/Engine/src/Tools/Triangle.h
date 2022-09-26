@@ -1,10 +1,10 @@
 #pragma once
-#include "Tools/Entity.h"
+#include "Tools/Entity2D.h"
 
 namespace DiloxGE
 {
 	class Triangle :
-		public Entity
+		public Entity2D
 	{
 	private:
 		Renderer2D* renderer2D;
