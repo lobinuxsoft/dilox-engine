@@ -14,9 +14,10 @@ namespace DiloxGE
 
 	}
 
-	void Renderer2D::DrawBuffer(int size)
+	void Renderer2D::DrawBuffer()
 	{
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, size);
+		glBindVertexArray(m_VertexArray);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	}
 
 	void Renderer2D::SetClearColor(float r, float g, float b, float a)
@@ -31,13 +32,16 @@ namespace DiloxGE
 
 	void Renderer2D::DrawTriangle(float vertexPos[3 * 3])
 	{
+		unsigned int indices[6] =
+		{
+			0,1,2,
+			2,3,0 };
+
 		glGenVertexArrays(1, &m_VertexArray);
 		glBindVertexArray(m_VertexArray);
 
-		glGenBuffers(1, &m_VertexBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPos) * 9, vertexPos, GL_STATIC_DRAW);
+		SetBuffers(1, m_IndexBuffer, indices);
+		SetBuffers(1, m_IndexBuffer, vertexPos);
 
 		BeginDraw();
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
@@ -45,13 +49,36 @@ namespace DiloxGE
 		glGenBuffers(1, &m_IndexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
 
-		unsigned int indices[3] = { 0,1,2 };
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	}
+
+	void Renderer2D::DrawSquare()
+	{
+
 	}
 
 	void Renderer2D::BeginDraw()
 	{
 		glEnableVertexAttribArray(0);
+	}
+
+	//Buffer array tiene los vertices / indices
+	void Renderer2D::SetBuffers(int quantity, unsigned int& id, unsigned int bufferArray[])
+	{
+		glGenBuffers(quantity, &id);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * 2 * sizeof(float), bufferArray, GL_STATIC_DRAW);
+	}
+
+	void Renderer2D::SetBuffers(int quantity, unsigned int& id, float bufferArray[])
+	{
+		glGenBuffers(quantity, &id);
+
+		glBindBuffer(GL_ARRAY_BUFFER, id);
+
+		glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), bufferArray, GL_STATIC_DRAW);
 	}
 
 }

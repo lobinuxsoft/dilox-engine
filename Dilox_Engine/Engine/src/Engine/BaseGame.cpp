@@ -11,7 +11,16 @@
 
 namespace DiloxGE
 {
-	float vertices[3 * 3] = {
+	float squareVertices[] =
+	{
+			-0.5f, -0.5f, 0.0f, //0
+			0.5f, -0.5f, 0.0f, //1
+			0.5f,  0.5f, 0.0f, //2
+			-0.5f,  0.5f, 0.0f  //3
+	};
+
+	float triangleVertices[] =
+	{
 			-0.5f, -0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f,
 			0.0f, 0.5f, 0.0f
@@ -36,11 +45,12 @@ namespace DiloxGE
 		PushOverlay(m_ImGuiLayer);
 
 		// El proceso de dibujar un triangulo
-		Triangle* triangle = new Triangle(renderer2D, vertices, true);
+		Triangle* triangle = new Triangle(renderer2D, squareVertices, true);
 	}
 
-	BaseGame::~BaseGame() 
+	BaseGame::~BaseGame()
 	{
+
 	}
 
 	void BaseGame::Run()
@@ -50,8 +60,8 @@ namespace DiloxGE
 			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+			renderer2D->DrawBuffer();
+			
 
 			for (Layer* layer : m_LayerStack)
 			{
@@ -104,7 +114,7 @@ namespace DiloxGE
 		{
 			(*--it)->OnEvent(e);
 
-			if (e.Handled)	
+			if (e.Handled)
 			{
 				break;
 			}
