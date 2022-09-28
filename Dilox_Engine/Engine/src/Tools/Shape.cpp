@@ -3,9 +3,11 @@
 
 namespace DiloxGE
 {
-	Shape::Shape(Renderer2D* renderer2D) : Entity2D(renderer2D)
+	Shape::Shape(Renderer2D* renderer2D, float vertexPos[], bool isStatic) : Entity2D(renderer2D)
 	{
 		this->renderer2D = renderer2D;
+		this->vertexPos[3 * 3] = vertexPos;
+		Draw();
 	}
 
 	Shape::~Shape()
@@ -15,13 +17,13 @@ namespace DiloxGE
 
 	void Shape::SetVertices(int vertexCount, float* vertexPosition)
 	{
-		this->vertexPosition = vertexPosition;
+		vertexPos[3 * 3] = vertexPosition;
 		this->vertexCount = vertexCount;
 	}
 
 	void Shape::Draw()
 	{
-
+		renderer2D->Draw(vertexPos[3 * 3]);
 	}
 }
 

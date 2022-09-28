@@ -45,7 +45,7 @@ namespace DiloxGE
 		PushOverlay(m_ImGuiLayer);
 
 		// El proceso de dibujar un triangulo
-		Triangle* triangle = new Triangle(renderer2D, triangleVertices, true);
+		Shape* shape = new Shape(renderer2D, triangleVertices, true);
 	}
 
 	BaseGame::~BaseGame()
@@ -61,7 +61,6 @@ namespace DiloxGE
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			renderer2D->DrawBuffer();
-			
 
 			for (Layer* layer : m_LayerStack)
 			{

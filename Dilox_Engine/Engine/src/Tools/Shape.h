@@ -9,21 +9,18 @@ namespace DiloxGE
 	{
 	private:
 		Renderer2D* renderer2D;
-		float* vertexPosition;
+		//float* vertexPosition;
 		int vertexCount;
+		float* vertexPos[];
 
 	public:
-		Shape(Renderer2D* renderer2D);
+		Shape(Renderer2D* renderer2D, float vertexPos[], bool isStatic);
 		~Shape();
 
 		void SetVertices(int vertexCount, float* vertexPosition);
 
 		void Draw();
 
-		float* GetVertexPosition()
-		{
-			return vertexPosition;
-		}
 		int GetVertexCount()
 		{
 			return vertexCount;

@@ -4,7 +4,7 @@
 
 namespace DiloxGE
 {
-	class Triangle :
+	/*class Triangle :
 		public Shape
 	{
 	private:
@@ -16,7 +16,7 @@ namespace DiloxGE
 		~Triangle();
 
 		void Draw();
-	};
+	};*/
 }
 
 
