@@ -2,6 +2,8 @@
 #include "Engine/Renderer/Shader.h"
 #include <glm/glm.hpp>
 
+typedef unsigned int GLenum;
+
 namespace DiloxGE
 {
 	class DGE_API OpenGLShader : public Shader
@@ -9,7 +11,12 @@ namespace DiloxGE
 	private:
 		uint32_t m_RendererID;
 
+		std::string ReadFile(const std::string& filepath);
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+		void Compile(std::unordered_map<GLenum, std::string>& shaderSources);
+
 	public:
+		OpenGLShader(const std::string& filepath);
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
