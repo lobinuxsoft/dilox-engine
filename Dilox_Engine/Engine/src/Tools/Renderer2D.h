@@ -13,7 +13,7 @@ namespace DiloxGE
 		void DrawBuffer();
 		void SetClearColor(float r, float g, float b, float a);
 		void ClearScreen();
-		void DrawTriangle(float vertexPos[3 * 3]);
+		void Draw(float vertexPos[]);
 		void DrawSquare();
 		void BeginDraw();
 

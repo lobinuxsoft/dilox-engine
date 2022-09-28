@@ -12,7 +12,7 @@ namespace DiloxGE
 		float* vertexPos[];
 
 	public:
-		Triangle(Renderer2D* renderer2D, float vertexPos[3 * 3], bool isStatic);
+		Triangle(Renderer2D* renderer2D, float vertexPos[], bool isStatic);
 		~Triangle();
 
 		void Draw();

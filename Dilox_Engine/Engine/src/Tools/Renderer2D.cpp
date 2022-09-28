@@ -30,12 +30,13 @@ namespace DiloxGE
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void Renderer2D::DrawTriangle(float vertexPos[3 * 3])
+	void Renderer2D::Draw(float vertexPos[])
 	{
 		unsigned int indices[6] =
 		{
 			0,1,2,
-			2,3,0 };
+			2,3,0 
+		};
 
 		glGenVertexArrays(1, &m_VertexArray);
 		glBindVertexArray(m_VertexArray);
