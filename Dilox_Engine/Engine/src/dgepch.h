@@ -11,6 +11,7 @@ Encabezados de precompilacion https://www.youtube.com/watch?v=UQ718BrbQ5E&list=P
 
 #include <string>
 #include <sstream>
+#include <array>
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
