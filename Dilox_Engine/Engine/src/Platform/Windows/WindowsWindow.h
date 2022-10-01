@@ -18,7 +18,7 @@ namespace DiloxGE
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 		GLFWwindow* m_Window;
-		GraphicsContext* m_Context;
+		Scope<GraphicsContext> m_Context;
 
 		struct WindowData
 		{

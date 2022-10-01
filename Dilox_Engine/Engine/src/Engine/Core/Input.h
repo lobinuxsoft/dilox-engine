@@ -25,6 +25,6 @@ namespace DiloxGE
 		virtual float GetMouseYImpl() = 0;
 
 	private:
-		static Input* s_Instance;  //ES UN SINGLETON!!!
+		static Scope<Input> s_Instance;
 	};
 }
