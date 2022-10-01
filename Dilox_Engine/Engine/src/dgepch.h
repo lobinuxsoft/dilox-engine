@@ -16,7 +16,7 @@ Encabezados de precompilacion https://www.youtube.com/watch?v=UQ718BrbQ5E&list=P
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Engine/Log.h"
+#include "Engine/Core/Log.h"
 
 #ifdef DGE_PLATFORM_WINDOWS
 	#include <Windows.h>

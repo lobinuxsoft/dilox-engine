@@ -1,7 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "Engine/Core/Timestep.h"
-#include "Events/Event.h"
+#include "Engine/Events/Event.h"
 
 namespace DiloxGE
 {

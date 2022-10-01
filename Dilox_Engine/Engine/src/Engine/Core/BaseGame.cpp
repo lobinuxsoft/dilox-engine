@@ -1,11 +1,11 @@
 #include "dgepch.h"
 #include "BaseGame.h"
 
-#include "Engine/Log.h"
+#include "Engine/Core/Log.h"
 
 #include "Engine/Renderer/Renderer.h"
 
-#include "Engine/Input.h"
+#include "Engine/Core/Input.h"
 
 #include <GLFW/glfw3.h>
 

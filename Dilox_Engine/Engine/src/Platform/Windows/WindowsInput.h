@@ -1,9 +1,9 @@
 #pragma once
 #include "dgepch.h"
-#include "Engine/Input.h"
+#include "Engine/Core/Input.h"
 
 #include "GLFW/glfw3.h"
-#include "Engine/BaseGame.h"
+#include "Engine/Core/BaseGame.h"
 
 namespace DiloxGE
 {

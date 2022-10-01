@@ -4,7 +4,7 @@
 
 #pragma once
 #include "dgepch.h"
-#include "Engine/Core.h"
+#include "Engine/Core/Core.h"
 
 namespace DiloxGE
 {

@@ -2,18 +2,18 @@
 
 #pragma region For use by DiloxGE applications
 
-#include "Engine/BaseGame.h"
-#include "Engine/Layer.h"
-#include "Engine/Log.h"
+#include "Engine/Core/BaseGame.h"
+#include "Engine/Core/Layer.h"
+#include "Engine/Core/Log.h"
 
 #include "Engine/Core/Timestep.h"
 
-#include "Engine/Input.h"
-#include "Engine/MouseButtonCodes.h"
-#include "Engine/Keycodes.h"
+#include "Engine/Core/Input.h"
+#include "Engine/Core/MouseButtonCodes.h"
+#include "Engine/Core/Keycodes.h"
 
 
-#include "Engine/OrtographicCameraController.h"
+#include "Engine/Renderer/OrtographicCameraController.h"
 
 #include "Engine/ImGui/ImGuiLayer.h"
 
@@ -28,7 +28,7 @@
 #pragma endregion
 
 #pragma region Entry Point
-#include "Engine/EntryPoint.h"
+#include "Engine/Core/EntryPoint.h"
 #pragma endregion
 
 #pragma endregion

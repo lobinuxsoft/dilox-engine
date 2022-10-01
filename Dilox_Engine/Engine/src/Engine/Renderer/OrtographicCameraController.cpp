@@ -1,7 +1,7 @@
 #include "dgepch.h"
-#include "Engine/OrtographicCameraController.h"
-#include "Engine/Input.h"
-#include "Engine/Keycodes.h"
+#include "Engine/Renderer/OrtographicCameraController.h"
+#include "Engine/Core/Input.h"
+#include "Engine/Core/Keycodes.h"
 
 namespace DiloxGE
 {
