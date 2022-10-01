@@ -27,8 +27,4 @@
 #include "Engine/Renderer/OrthographicCamera.h"
 #pragma endregion
 
-#pragma region Entry Point
-#include "Engine/Core/EntryPoint.h"
-#pragma endregion
-
 #pragma endregion
