@@ -6,7 +6,7 @@
 namespace DiloxGE
 {
 	OrtographicCameraController::OrtographicCameraController(float aspectRatio, bool rotation) :
-		m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+		m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 
 	}
@@ -14,9 +14,9 @@ namespace DiloxGE
 	void OrtographicCameraController::OnUpdate(Timestep ts)
 	{
 		if (Input::IsKeyPressed(DGE_KEY_D))
-			m_CameraPosition.x += m_CameraTranslationSpeed * ts;
-		else if (Input::IsKeyPressed(DGE_KEY_A))
 			m_CameraPosition.x -= m_CameraTranslationSpeed * ts;
+		else if (Input::IsKeyPressed(DGE_KEY_A))
+			m_CameraPosition.x += m_CameraTranslationSpeed * ts;
 
 		if (Input::IsKeyPressed(DGE_KEY_W))
 			m_CameraPosition.y += m_CameraTranslationSpeed * ts;

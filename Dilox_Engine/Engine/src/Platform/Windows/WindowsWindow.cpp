@@ -66,6 +66,7 @@ namespace DiloxGE
 
 			// Se crea el evento correspondiente y se le asignan los datos si fueran necesarios
 			WindowResizeEvent event(width, height);
+
 			// Se envia el evento
 			data.EventCallback(event);
 		});

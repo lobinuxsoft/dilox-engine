@@ -1,10 +1,10 @@
 #pragma once
 
 #include <Engine/Renderer/OrthographicCamera.h>
-#include "Engine\Core\Timestep.h"
+#include "Engine/Core/Timestep.h"
 
-#include "Engine\Events\ApplicationEvent.h" //Para resizear la ventana
-#include "Engine\Events\MouseEvent.h"       //Para zoom-in/zoom-out de la camara
+#include "Engine/Events/ApplicationEvent.h" //Para resizear la ventana
+#include "Engine/Events/MouseEvent.h"       //Para zoom-in/zoom-out de la camara
 
 namespace DiloxGE
 {
@@ -18,6 +18,9 @@ namespace DiloxGE
 
 		OrthographicCamera& GetCamera() { return m_Camera; }
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
+
+		float GetZoomLevel() const { return m_ZoomLevel; }
+		void SetZoomLevel(float level) { m_ZoomLevel = level; }
 
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
@@ -33,6 +36,6 @@ namespace DiloxGE
 		glm::vec3 m_CameraPosition = { 0.0f,0.0f ,0.0f };
 		float m_CameraRotation = 0.0f;
 		float m_CameraTranslationSpeed = 5.0f;
-		float m_CameraRotationSpeed = 90.0f;
+		float m_CameraRotationSpeed = 180.0f;
 	};
 }

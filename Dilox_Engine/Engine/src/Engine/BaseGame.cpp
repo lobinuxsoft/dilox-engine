@@ -40,10 +40,13 @@ namespace DiloxGE
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			// Update all layers
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timestep);
-
+			if (!m_Minimized)
+			{
+				// Update all layers
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(timestep);
+			}
+			
 			m_ImGuiLayer->Begin();
 
 			// Execute all OnGuiRender
@@ -62,6 +65,21 @@ namespace DiloxGE
 		return true;
 	}
 
+	bool BaseGame::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
+	}
+
 	void BaseGame::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
@@ -78,6 +96,7 @@ namespace DiloxGE
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(BaseGame::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(BaseGame::OnWindowResize));
 
 		//Esta linea mostraria todos los eventos automaticos (posicion del mouse, 
 		//DGE_CORE_TRACE("{0}", e);
