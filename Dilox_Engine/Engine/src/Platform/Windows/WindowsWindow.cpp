@@ -1,5 +1,5 @@
 #include "dgepch.h"
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "Engine/Events/ApplicationEvent.h"
 #include "Engine/Events/MouseEvent.h"
@@ -13,9 +13,9 @@ namespace DiloxGE
 
 	static void GLFWErrorCallback(int error, const char* description) { DGE_CORE_ERROR("GLFW Error ({0}): {1}", error, description); }
 
-	Window* Window::Create(const WindowProps& props)
+	Scope<Window> Window::Create(const WindowProps& props)
 	{
-		return new WindowsWindow(props);
+		return CreateScope<WindowsWindow>(props);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -36,9 +36,8 @@ namespace DiloxGE
 
 		DGE_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (s_GLFWWindowCount == 0) //Inicializa GLFW
+		if (s_GLFWWindowCount == 0)
 		{
-			DGE_CORE_INFO("Initializing GLFW");
 			int success = glfwInit();
 			DGE_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
@@ -47,7 +46,7 @@ namespace DiloxGE
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		++s_GLFWWindowCount;
 
-		m_Context = CreateScope<OpenGLContext>(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
 
 		m_Context->Init();
 
@@ -155,9 +154,10 @@ namespace DiloxGE
 	void WindowsWindow::Shutdown() 
 	{
 		glfwDestroyWindow(m_Window);
-		if (--s_GLFWWindowCount == 0)
+		--s_GLFWWindowCount;
+
+		if (s_GLFWWindowCount == 0)
 		{
-			DGE_CORE_INFO("Terminating GLFW");
 			glfwTerminate();
 		}
 	}

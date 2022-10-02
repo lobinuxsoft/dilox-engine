@@ -1,9 +1,9 @@
 #pragma once
 
-#include "RenderCommand.h"
+#include "Engine/Renderer/RenderCommand.h"
 
-#include "OrthographicCamera.h"
-#include "Shader.h"
+#include "Engine/Renderer/OrthographicCamera.h"
+#include "Engine/Renderer/Shader.h"
 
 
 namespace DiloxGE
@@ -12,6 +12,8 @@ namespace DiloxGE
 	{
 	public:
 		static void Init();
+		static void Shutdown();
+
 		static void OnWindowResize(uint32_t width, int32_t height);
 
 		static void BeginScene(OrthographicCamera& camera);

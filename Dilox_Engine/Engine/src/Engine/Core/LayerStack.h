@@ -6,7 +6,7 @@ namespace DiloxGE
 	class LayerStack //Agrupa layers
 	{
 	public:
-		LayerStack();
+		LayerStack() = default;
 		~LayerStack();
 
 		void PushLayer(Layer* layer);

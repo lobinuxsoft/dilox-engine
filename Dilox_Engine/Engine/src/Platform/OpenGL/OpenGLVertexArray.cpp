@@ -1,7 +1,7 @@
 #include "dgepch.h"
-#include "OpenGLVertexArray.h"
+#include "Platform/OpenGL/OpenGLVertexArray.h"
 
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 namespace DiloxGE
 {
@@ -9,17 +9,17 @@ namespace DiloxGE
 	{
 		switch (type)
 		{
-			case DiloxGE::ShaderDataType::Float:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Float2:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Float3:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Float4:	return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Mat3:		return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Mat4:		return GL_FLOAT;
-			case DiloxGE::ShaderDataType::Int:		return GL_INT;
-			case DiloxGE::ShaderDataType::Int2:		return GL_INT;
-			case DiloxGE::ShaderDataType::Int3:		return GL_INT;
-			case DiloxGE::ShaderDataType::Int4:		return GL_INT;
-			case DiloxGE::ShaderDataType::Bool:		return GL_BOOL;
+			case ShaderDataType::Float:	return GL_FLOAT;
+			case ShaderDataType::Float2:	return GL_FLOAT;
+			case ShaderDataType::Float3:	return GL_FLOAT;
+			case ShaderDataType::Float4:	return GL_FLOAT;
+			case ShaderDataType::Mat3:		return GL_FLOAT;
+			case ShaderDataType::Mat4:		return GL_FLOAT;
+			case ShaderDataType::Int:		return GL_INT;
+			case ShaderDataType::Int2:		return GL_INT;
+			case ShaderDataType::Int3:		return GL_INT;
+			case ShaderDataType::Int4:		return GL_INT;
+			case ShaderDataType::Bool:		return GL_BOOL;
 		}
 
 		DGE_CORE_ASSERT(false, "Unknoen ShaderDataType!");

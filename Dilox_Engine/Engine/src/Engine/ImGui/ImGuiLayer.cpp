@@ -1,9 +1,9 @@
 #include "dgepch.h"
-#include "ImGuiLayer.h"
+#include "Engine/ImGui/ImGuiLayer.h"
 
-#include "imgui.h"
-#include "backends/imgui_impl_glfw.h"
-#include "backends/imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 
 #include "Engine/Core/BaseGame.h"

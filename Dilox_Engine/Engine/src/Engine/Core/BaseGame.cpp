@@ -1,5 +1,5 @@
 #include "dgepch.h"
-#include "BaseGame.h"
+#include "Engine/Core/BaseGame.h"
 
 #include "Engine/Core/Log.h"
 
@@ -11,9 +11,6 @@
 
 namespace DiloxGE
 {
-
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
-
 	BaseGame* BaseGame::s_Instance = nullptr;
 
 	BaseGame::BaseGame()
@@ -21,8 +18,8 @@ namespace DiloxGE
 		DGE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = Scope<Window>(Window::Create()); //Aca podes pasarle los valores que quieras a la ventana, creando un WindowProps
-		m_Window->SetEventCallback(BIND_EVENT_FN(BaseGame::OnEvent));
+		m_Window = Window::Create(); //Aca podes pasarle los valores que quieras a la ventana, creando un WindowProps
+		m_Window->SetEventCallback(DGE_BIND_EVENT_FN(BaseGame::OnEvent));
 
 		Renderer::Init();
 
@@ -30,7 +27,10 @@ namespace DiloxGE
 		PushOverlay(m_ImGuiLayer);
 	}
 
-	BaseGame::~BaseGame() { }
+	BaseGame::~BaseGame() 
+	{
+		Renderer::Shutdown();
+	}
 
 	void BaseGame::Run()
 	{
@@ -95,8 +95,8 @@ namespace DiloxGE
 	void BaseGame::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(BaseGame::OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(BaseGame::OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(DGE_BIND_EVENT_FN(BaseGame::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(BaseGame::OnWindowResize));
 
 		//Esta linea mostraria todos los eventos automaticos (posicion del mouse, 
 		//DGE_CORE_TRACE("{0}", e);

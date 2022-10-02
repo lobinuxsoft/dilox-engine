@@ -1,8 +1,8 @@
 #include "dgepch.h"
-#include "RenderCommand.h"
+#include "Engine/Renderer/RenderCommand.h"
 #include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace DiloxGE
 {
-	Scope<RendererAPI> RenderCommand::s_RendererAPI = CreateScope<OpenGLRendererAPI>();
+	Scope<RendererAPI> RenderCommand::s_RendererAPI = RendererAPI::Create();
 }

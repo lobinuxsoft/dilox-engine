@@ -1,9 +1,7 @@
 #include <DiloxGE.h>
 #include <Engine/Core/EntryPoint.h>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
-#include "imgui/imgui.h"
+#include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Sandbox2D.h"
@@ -32,8 +30,7 @@ public:
 			0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		DiloxGE::Ref<DiloxGE::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(DiloxGE::VertexBuffer::Create(vertices, sizeof(vertices)));
+		DiloxGE::Ref<DiloxGE::VertexBuffer> vertexBuffer = DiloxGE::VertexBuffer::Create(vertices, sizeof(vertices));
 		DiloxGE::BufferLayout layout = {
 			{ DiloxGE::ShaderDataType::Float3, "a_Position"},
 			{ DiloxGE::ShaderDataType::Float4, "a_Color"}
@@ -43,8 +40,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0,1,2 };
-		DiloxGE::Ref<DiloxGE::IndexBuffer> indexBuffer;
-		indexBuffer.reset(DiloxGE::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		DiloxGE::Ref<DiloxGE::IndexBuffer> indexBuffer = DiloxGE::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		m_SquareVA = DiloxGE::VertexArray::Create();
@@ -56,8 +52,7 @@ public:
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
-		DiloxGE::Ref<DiloxGE::VertexBuffer> squareVB;
-		squareVB.reset(DiloxGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		DiloxGE::Ref<DiloxGE::VertexBuffer> squareVB = DiloxGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		squareVB->SetLayout({
 			{ DiloxGE::ShaderDataType::Float3, "a_Position" },
@@ -66,8 +61,7 @@ public:
 		m_SquareVA->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
-		DiloxGE::Ref<DiloxGE::IndexBuffer> squareIB;
-		squareIB.reset(DiloxGE::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		DiloxGE::Ref<DiloxGE::IndexBuffer> squareIB = DiloxGE::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
@@ -146,8 +140,8 @@ public:
 		m_Texture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
 		m_CryingOnionTexture = DiloxGE::Texture2D::Create("assets/textures/CryingOnionLogo.png");
 
-		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(textureShader)->Bind();
-		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
+		textureShader->Bind();
+		textureShader->SetInt("u_Texture", 0);
 	}
 
 	void OnUpdate(DiloxGE::Timestep ts) override
@@ -163,8 +157,8 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat3("u_Color", m_SquareColor);
+		m_FlatColorShader->Bind();
+		m_FlatColorShader->SetFloat3("u_Color", m_SquareColor);
 
 		for (size_t y = 0; y < 20; y++)
 		{
