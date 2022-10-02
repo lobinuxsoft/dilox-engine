@@ -10,30 +10,7 @@ Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f
 
 void Sandbox2D::OnAttach() 
 {
-	m_SquareVA = DiloxGE::VertexArray::Create();
-
-	float squareVertices[5 * 4] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
-	};
-
-	DiloxGE::Ref<DiloxGE::VertexBuffer> squareVB;
-	squareVB.reset(DiloxGE::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-
-	squareVB->SetLayout({
-		{ DiloxGE::ShaderDataType::Float3, "a_Position" }
-	});
-
-	m_SquareVA->AddVertexBuffer(squareVB);
-
-	uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
-	DiloxGE::Ref<DiloxGE::IndexBuffer> squareIB;
-	squareIB.reset(DiloxGE::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-	m_SquareVA->SetIndexBuffer(squareIB);
-
-	m_FlatColorShader = DiloxGE::Shader::Create("assets/shaders/FlatColor.glsl");
+	
 }
 
 void Sandbox2D::OnDetach()
@@ -50,20 +27,19 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	DiloxGE::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	DiloxGE::RenderCommand::Clear();
 
-	DiloxGE::Renderer::BeginScene(m_CameraController.GetCamera());
+	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	DiloxGE::Renderer2D::DrawQuad({ 0.0f,0.0f }, { 1.0f,1.0f }, m_SquareColor);
+	DiloxGE::Renderer2D::EndScene();
 
-	std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_FlatColorShader)->Bind();
-	std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
-
-	DiloxGE::Renderer::Submit(m_FlatColorShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)));
-
-	DiloxGE::Renderer::EndScene();
+	// TODO: Add this functions >>=> Shader::SetMat4, Shader::SetFloat4
+	// std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_FlatColorShader)->Bind();
+	// std::dynamic_pointer_cast<DiloxGE::OpenGLShader>(m_FlatColorShader)->UploadUniformFloat4("u_Color", m_SquareColor);
 }
 
 void Sandbox2D::OnImGuiRender()
 {
 	ImGui::Begin("Settings");
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor), ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_AlphaBar);
 	ImGui::End();
 }
 
