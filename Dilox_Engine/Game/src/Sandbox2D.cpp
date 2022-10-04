@@ -27,7 +27,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 
 	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
 	DiloxGE::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-	DiloxGE::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
+	DiloxGE::Renderer2D::DrawQuad(m_SquarePos, m_SquareScale, m_SquareColor);
 	DiloxGE::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
 	DiloxGE::Renderer2D::EndScene();
 }
@@ -41,6 +41,9 @@ void Sandbox2D::OnImGuiRender()
 		glm::value_ptr(m_SquareColor),
 		ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_AlphaBar
 	);
+
+	ImGui::DragFloat2("Position", glm::value_ptr(m_SquarePos), 0.1f);
+	ImGui::DragFloat2("Scale", glm::value_ptr(m_SquareScale), 0.1f);
 
 	ImGui::End();
 }

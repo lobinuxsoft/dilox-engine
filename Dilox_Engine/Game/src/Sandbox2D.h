@@ -25,4 +25,6 @@ private:
 	DiloxGE::Ref<DiloxGE::Texture2D> m_CheckerboardTexture;
 
 	glm::vec4 m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
+	glm::vec2 m_SquarePos = { 0.0f,0.0f };
+	glm::vec2 m_SquareScale = { 1.0f,1.0f };
 };
