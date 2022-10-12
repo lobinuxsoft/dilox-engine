@@ -125,13 +125,13 @@ namespace DiloxGE
 
 #define DGE_PROFILE 1
 #if DGE_PROFILE
-#define DGE_PROFILE_BEGIN_SESSION(name, filepath) ::DiloxGE::Instrumentor::Get().BeginSession(name, filepath)
-#define DGE_PROFILE_END_SESSION() ::DiloxGE::Instrumentor::Get().EndSession()
-#define DGE_PROFILE_SCOPE(name) ::DiloxGE::InstrumentationTimer timer##__LINE__(name);
-#define DGE_PROFILE_FUNCTION() DGE_PROFILE_SCOPE(__FUNCSIG__)
+	#define DGE_PROFILE_BEGIN_SESSION(name, filepath) ::DiloxGE::Instrumentor::Get().BeginSession(name, filepath)
+	#define DGE_PROFILE_END_SESSION() ::DiloxGE::Instrumentor::Get().EndSession()
+	#define DGE_PROFILE_SCOPE(name) ::DiloxGE::InstrumentationTimer timer##__LINE__(name);
+	#define DGE_PROFILE_FUNCTION() DGE_PROFILE_SCOPE(__FUNCSIG__)
 #else
-#define DGE_PROFILE_BEGIN_SESSION(name, filepath)
-#define DGE_PROFILE_END_SESSION()
-#define DGE_PROFILE_SCOPE(name)
-#define DGE_PROFILE_FUNCTION()
+	#define DGE_PROFILE_BEGIN_SESSION(name, filepath)
+	#define DGE_PROFILE_END_SESSION()
+	#define DGE_PROFILE_SCOPE(name)
+	#define DGE_PROFILE_FUNCTION()
 #endif
