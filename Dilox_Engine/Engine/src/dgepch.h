@@ -18,6 +18,8 @@ Encabezados de precompilacion https://www.youtube.com/watch?v=UQ718BrbQ5E&list=P
 
 #include "Engine/Core/Log.h"
 
+#include "Engine/Debug/Instrumentor.h"
+
 #ifdef DGE_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif // DGE_PLATFORM_WINDOWS
