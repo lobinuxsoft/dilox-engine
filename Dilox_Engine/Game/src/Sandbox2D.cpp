@@ -36,9 +36,9 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	{
 		DGE_PROFILE_SCOPE("Renderer Draw");
 		DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		DiloxGE::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		DiloxGE::Renderer2D::DrawQuad(m_SquarePos, m_SquareScale, m_SquareColor);
-		DiloxGE::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture);
+		DiloxGE::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(-45.0f), { 0.8f, 0.2f, 0.3f, 1.0f });
+		DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_SquareRotation), m_SquareColor);
+		DiloxGE::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 		DiloxGE::Renderer2D::EndScene();
 	}
 }
@@ -55,7 +55,12 @@ void Sandbox2D::OnImGuiRender()
 		ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_AlphaBar
 	);
 
-	ImGui::DragFloat2("Position", glm::value_ptr(m_SquarePos), 0.1f);
+	ImGui::DragFloat2("Translation", glm::value_ptr(m_SquarePos), 0.1f);
+
+	ImGui::DragFloat("Rotation", &m_SquareRotation, 1.0f);
+
+	m_SquareRotation = m_SquareRotation >= 360.0f || m_SquareRotation <= -360.0f ? 0 : m_SquareRotation;
+
 	ImGui::DragFloat2("Scale", glm::value_ptr(m_SquareScale), 0.1f);
 
 	ImGui::End();
