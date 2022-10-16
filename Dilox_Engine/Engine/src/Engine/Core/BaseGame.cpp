@@ -118,12 +118,9 @@ namespace DiloxGE
 		dispatcher.Dispatch<WindowCloseEvent>(DGE_BIND_EVENT_FN(BaseGame::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(BaseGame::OnWindowResize));
 
-		//Esta linea mostraria todos los eventos automaticos (posicion del mouse, 
-		//DGE_CORE_TRACE("{0}", e);
-
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
-			(*--it)->OnEvent(e);
+			(*it)->OnEvent(e);
 
 			if (e.Handled)	
 			{
