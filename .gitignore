@@ -10,3 +10,6 @@ obj/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+*DiloxGEProfile-Startup.json
+*DiloxGEProfile-Runtime.json
+*DiloxGEProfile-Shutdown.json
