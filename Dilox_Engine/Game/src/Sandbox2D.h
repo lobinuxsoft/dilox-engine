@@ -16,7 +16,7 @@ public:
 	void OnEvent(DiloxGE::Event& e) override;
 
 private:
-	DiloxGE::OrtographicCameraController m_CameraController;
+	DiloxGE::OrthographicCameraController m_CameraController;
 
 	// Temp
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
