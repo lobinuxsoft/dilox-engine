@@ -13,6 +13,8 @@ namespace DiloxGE
 
 	void OrtographicCameraController::OnUpdate(Timestep ts)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		if (Input::IsKeyPressed(DGE_KEY_A))
 		{
 			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
@@ -57,6 +59,8 @@ namespace DiloxGE
 
 	void OrtographicCameraController::OnEvent(Event& e)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(DGE_BIND_EVENT_FN(OrtographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(OrtographicCameraController::OnWindowResize));
@@ -64,6 +68,8 @@ namespace DiloxGE
 
 	bool OrtographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f); //Impide que la camara tenga zoom negativo
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -73,6 +79,8 @@ namespace DiloxGE
 
 	bool OrtographicCameraController::OnWindowResize(WindowResizeEvent& e)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

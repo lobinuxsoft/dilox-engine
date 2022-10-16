@@ -15,6 +15,8 @@ namespace DiloxGE
 
 	BaseGame::BaseGame()
 	{
+		DGE_PROFILE_FUNCTION();
+
 		DGE_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
@@ -29,31 +31,41 @@ namespace DiloxGE
 
 	BaseGame::~BaseGame() 
 	{
+		DGE_PROFILE_FUNCTION();
+
 		Renderer::Shutdown();
 	}
 
 	void BaseGame::Run()
 	{
+		DGE_PROFILE_FUNCTION();
+
 		while (m_Running)
 		{
+			DGE_PROFILE_SCOPE("RunLoop");
+			
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimized)
 			{
-				// Update all layers
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					DGE_PROFILE_SCOPE("LayerStack OnUpdate");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
+
+				m_ImGuiLayer->Begin();
+				{
+					DGE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
 			}
-			
-			m_ImGuiLayer->Begin();
-
-			// Execute all OnGuiRender
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-
-			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
@@ -67,6 +79,8 @@ namespace DiloxGE
 
 	bool BaseGame::OnWindowResize(WindowResizeEvent& e)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_Minimized = true;
@@ -82,18 +96,24 @@ namespace DiloxGE
 
 	void BaseGame::PushLayer(Layer* layer)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void BaseGame::PushOverlay(Layer* layer)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
 	}
 
 	void BaseGame::OnEvent(Event& e)
 	{
+		DGE_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(DGE_BIND_EVENT_FN(BaseGame::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(BaseGame::OnWindowResize));

@@ -10,6 +10,8 @@ namespace DiloxGE
 
 	void Renderer::Init()
 	{
+		DGE_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}
