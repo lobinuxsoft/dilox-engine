@@ -8,10 +8,10 @@
 
 namespace DiloxGE
 {
-	class DGE_API OrtographicCameraController
+	class DGE_API OrthographicCameraController
 	{
 	public:
-		OrtographicCameraController(float aspectRatio, bool rotation = false); //aspect ratio *  2 units
+		OrthographicCameraController(float aspectRatio, bool rotation = false); //aspect ratio *  2 units
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);

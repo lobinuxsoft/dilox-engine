@@ -1,17 +1,17 @@
 #include "dgepch.h"
-#include "Engine/Renderer/OrtographicCameraController.h"
+#include "Engine/Renderer/OrthographicCameraController.h"
 #include "Engine/Core/Input.h"
 #include "Engine/Core/Keycodes.h"
 
 namespace DiloxGE
 {
-	OrtographicCameraController::OrtographicCameraController(float aspectRatio, bool rotation) :
+	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation) :
 		m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 
 	}
 
-	void OrtographicCameraController::OnUpdate(Timestep ts)
+	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
 		DGE_PROFILE_FUNCTION();
 
@@ -57,16 +57,16 @@ namespace DiloxGE
 		m_CameraTranslationSpeed = m_ZoomLevel; //Esto permite que si hay mucho zoom, la camara se mueva mas lento, si estas lejos se mueve mas rapido
 	}
 
-	void OrtographicCameraController::OnEvent(Event& e)
+	void OrthographicCameraController::OnEvent(Event& e)
 	{
 		DGE_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<MouseScrolledEvent>(DGE_BIND_EVENT_FN(OrtographicCameraController::OnMouseScrolled));
-		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(OrtographicCameraController::OnWindowResize));
+		dispatcher.Dispatch<MouseScrolledEvent>(DGE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
+		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResize));
 	}
 
-	bool OrtographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
+	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		DGE_PROFILE_FUNCTION();
 
@@ -77,7 +77,7 @@ namespace DiloxGE
 		return false;
 	}
 
-	bool OrtographicCameraController::OnWindowResize(WindowResizeEvent& e)
+	bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
 	{
 		DGE_PROFILE_FUNCTION();
 
