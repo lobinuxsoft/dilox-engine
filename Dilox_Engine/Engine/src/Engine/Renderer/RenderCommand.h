@@ -15,7 +15,10 @@ namespace DiloxGE
 
 		inline static void Clear() { s_RendererAPI->Clear(); }
 
-		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RendererAPI->DrawIndexed(vertexArray); }
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t count = 0)
+		{
+			s_RendererAPI->DrawIndexed(vertexArray, count);
+		}
 
 	private:
 		static Scope<RendererAPI> s_RendererAPI;
