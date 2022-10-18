@@ -217,6 +217,11 @@ namespace DiloxGE
 		UploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		UploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::SetFloat(const std::string& name, float value)
 	{
 		DGE_PROFILE_FUNCTION();
@@ -245,11 +250,18 @@ namespace DiloxGE
 		UploadUniformMat4(name, value);
 	}
 
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count)
+	{
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		glUniform1iv(location, count, values);
+	}
+
 	void OpenGLShader::UploadUniformInt(const std::string& name, int values)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, values);
 	}
+
 
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float values)
 	{

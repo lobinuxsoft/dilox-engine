@@ -39,6 +39,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		//DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_SquareRotation), m_SquareColor);
 		//DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_SquareRotation), m_SquareColor);
 		DiloxGE::Renderer2D::DrawQuad({ m_SquarePos }, { m_SquareScale }, { m_SquareColor });
+		DiloxGE::Renderer2D::DrawQuad({ -5.0f, -5.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 		//DiloxGE::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 		DiloxGE::Renderer2D::EndScene();
 	}
