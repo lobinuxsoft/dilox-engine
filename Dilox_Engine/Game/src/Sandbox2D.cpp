@@ -27,6 +27,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	m_CameraController.OnUpdate(ts);
 
 	// Render
+	DiloxGE::Renderer2D::ResetStats();
 	{
 		DGE_PROFILE_SCOPE("Renderer Prep");
 		DiloxGE::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -37,10 +38,21 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		DGE_PROFILE_SCOPE("Renderer Draw");
 		DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
 		//DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_SquareRotation), m_SquareColor);
-		DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_SquareRotation), m_SquareColor);
+		DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, m_SquareRotation, m_SquareColor);
 		//DiloxGE::Renderer2D::DrawQuad({ m_SquarePos }, { m_SquareScale }, { m_SquareColor });
 		//DiloxGE::Renderer2D::DrawQuad({ -5.0f, -5.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 		//DiloxGE::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
+		DiloxGE::Renderer2D::EndScene();
+
+		DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		for (float y = -5.0f; y < 5.0f; y += 0.5f)
+		{
+			for (float x = -5.0f; x < 5.0f; x += 0.5f)
+			{
+				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f };
+				DiloxGE::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
+			}
+		}
 		DiloxGE::Renderer2D::EndScene();
 	}
 }

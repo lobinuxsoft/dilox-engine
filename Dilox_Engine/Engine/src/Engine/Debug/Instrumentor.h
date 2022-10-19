@@ -123,7 +123,7 @@ namespace DiloxGE
 	};
 }
 
-#define DGE_PROFILE 1
+#define DGE_PROFILE 0
 #if DGE_PROFILE
 	#define DGE_PROFILE_BEGIN_SESSION(name, filepath) ::DiloxGE::Instrumentor::Get().BeginSession(name, filepath)
 	#define DGE_PROFILE_END_SESSION() ::DiloxGE::Instrumentor::Get().EndSession()
