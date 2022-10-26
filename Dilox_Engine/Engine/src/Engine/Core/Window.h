@@ -8,7 +8,7 @@ Basado en (para la abstracion de GLFW) https://www.youtube.com/watch?v=88dmtleVy
 
 #include "dgepch.h"
 
-#include "Engine/Core/Core.h"
+#include "Engine/Core/Base.h"
 #include "Engine/Events/Event.h"
 
 namespace DiloxGE

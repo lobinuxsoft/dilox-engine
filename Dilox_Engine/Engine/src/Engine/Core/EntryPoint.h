@@ -3,7 +3,7 @@ Basado en https://www.youtube.com/watch?v=meARMOmTLgE&list=PLlrATfBNZ98dC-V-N3m0
 */
 
 #pragma once
-#include "Engine/Core/Core.h";
+#include "Engine/Core/Base.h";
 
 #ifdef DGE_PLATFORM_WINDOWS
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Engine/Core/Core.h"
+#include "Engine/Core/Base.h"
 
 namespace DiloxGE
 {

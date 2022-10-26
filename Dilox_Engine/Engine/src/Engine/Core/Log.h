@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Engine/Core/Core.h"
+#include "Engine/Core/Base.h"
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
