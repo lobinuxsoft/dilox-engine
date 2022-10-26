@@ -13,12 +13,24 @@
 #endif // DGE_PLATFORM_WINDOWS
 
 #ifdef DGE_DEBUG
+	#if defined(DGE_PLATFORM_WINDOWS)
+		#define DGE_DEBUGBREAK() __debugbreak()
+	#else
+		#error "Platform doesn´t support debugbrak yet!"
+	#endif // defined(DGE_PLATFORM_WINDOWS)
+#define DGE_ENABLE_ASSERTS
+#else 
+	#define DGE_DEBUGBREAK()
+#endif // DGE_DEBUG
+
+
+#ifdef DGE_DEBUG
 	#define DGE_ENBLE_ASSERTS
 #endif // DGE_DEBUG
 
 #ifdef DGE_ENABLE_ASSERTS
-	#define DGE_ASSERT(x, ...) { if(!(x)) { DGE_ERROR("Assetion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define DGE_CORE_ASSERT(x, ...) { if(!(x)) { DGE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();} }
+	#define DGE_ASSERT(x, ...) { if(!(x)) { DGE_ERROR("Assetion Failed: {0}", __VA_ARGS__); DGE_DEBUGBREAK(); } }
+	#define DGE_CORE_ASSERT(x, ...) { if(!(x)) { DGE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); DGE_DEBUGBREAK();} }
 #else
 	#define DGE_ASSERT(x, ...)
 	#define DGE_CORE_ASSERT(x, ...)

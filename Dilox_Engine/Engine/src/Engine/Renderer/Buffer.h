@@ -24,7 +24,7 @@ namespace DiloxGE
 		case ShaderDataType::Bool:		return 1;
 		}
 
-		DGE_CORE_ASSERT(false; "Unknown ShaderDataType!");
+		DGE_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 
@@ -58,7 +58,7 @@ namespace DiloxGE
 			case ShaderDataType::Bool:		return 1;
 			}
 
-			DGE_CORE_ASSERT(false; "Unknown ShaderDataType!");
+			DGE_CORE_ASSERT(false, "Unknown ShaderDataType!");
 			return 0;
 		}
 	};
