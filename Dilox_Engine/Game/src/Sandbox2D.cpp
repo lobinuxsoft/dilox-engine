@@ -7,11 +7,12 @@
 
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f, true) { }
 
-void Sandbox2D::OnAttach() 
+void Sandbox2D::OnAttach()
 {
 	DGE_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -26,6 +27,8 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	// Update
 	m_CameraController.OnUpdate(ts);
 
+
+
 	// Render
 	DiloxGE::Renderer2D::ResetStats();
 	{
@@ -34,14 +37,15 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		DiloxGE::RenderCommand::Clear();
 	}
 
-	{
-		DGE_PROFILE_SCOPE("Renderer Draw");
+
+	DGE_PROFILE_SCOPE("Renderer Draw");
+	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	DiloxGE::Renderer2D::DrawQuad({ 0.0f,0.0f,0.0f }, { 1.0f,1.0f }, m_SpriteSheet);
+	DiloxGE::Renderer2D::EndScene();
+
+	/*{
 		DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		//DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, glm::radians(m_SquareRotation), m_SquareColor);
 		DiloxGE::Renderer2D::DrawRotatedQuad(m_SquarePos, m_SquareScale, m_SquareRotation, m_SquareColor);
-		//DiloxGE::Renderer2D::DrawQuad({ m_SquarePos }, { m_SquareScale }, { m_SquareColor });
-		//DiloxGE::Renderer2D::DrawQuad({ -5.0f, -5.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
-		//DiloxGE::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 		DiloxGE::Renderer2D::EndScene();
 
 		DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -54,7 +58,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 			}
 		}
 		DiloxGE::Renderer2D::EndScene();
-	}
+	}*/
 }
 
 void Sandbox2D::OnImGuiRender()
