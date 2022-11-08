@@ -13,6 +13,10 @@ void Sandbox2D::OnAttach()
 
 	m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
+
+	m_TextureStairs = DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 6 }, { 128, 128 });
+	m_TextureBarrel = DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 8, 2 }, { 128, 128 });
+	m_TextureTree = DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 128, 128 }, { 1, 2 });
 }
 
 void Sandbox2D::OnDetach()
@@ -40,7 +44,9 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 
 	DGE_PROFILE_SCOPE("Renderer Draw");
 	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	DiloxGE::Renderer2D::DrawQuad({ 0.0f,0.0f,0.0f }, { 1.0f,1.0f }, m_SpriteSheet);
+	DiloxGE::Renderer2D::DrawQuad({1,0}, m_SquareScale, m_TextureStairs);
+	DiloxGE::Renderer2D::DrawQuad({0,0}, {1,1}, m_TextureBarrel);
+	DiloxGE::Renderer2D::DrawQuad(m_SquarePos, {1.0f,1.5f}, m_TextureTree);
 	DiloxGE::Renderer2D::EndScene();
 
 	/*{
