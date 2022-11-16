@@ -25,6 +25,7 @@
 #include "Engine/Renderer/Shader.h"
 #include "Engine/Renderer/Texture.h"
 #include "Engine/Renderer/SubTexture2D.h"
+#include "Engine/Renderer/Animation.h"
 #include "Engine/Renderer/VertexArray.h"
 #include "Engine/Renderer/OrthographicCamera.h"
 #pragma endregion
