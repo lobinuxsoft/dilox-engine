@@ -29,6 +29,7 @@ private:
 
 	float animTime = 0.0f;
 	float animDuration = 3.0f;
+	float animSpeed = 1.0f;
 
 	glm::vec4 m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
 	float m_SquareRotation = 0;

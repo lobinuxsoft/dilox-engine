@@ -21,6 +21,7 @@ void Sandbox2D::OnAttach()
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 1 }, { 128, 128 }, { 1, 2 }));
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 128, 128 }, { 1, 2 }));
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 4, 1 }, { 128, 128 }, { 1, 2 }));
+	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 1 }, { 128, 128 }, { 1, 2 }));
 }
 
 void Sandbox2D::OnDetach()
@@ -52,12 +53,13 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	//DiloxGE::Renderer2D::DrawQuad({0,1}, {1,1}, m_TextureBarrel);
 	//DiloxGE::Renderer2D::DrawQuad({0,-1}, {1.0f,1.5f}, m_TextureTree);
 
-	animTime += ts;
+	animTime += ts * animSpeed;
 
-	if (animTime > animDuration)
-		animTime -= animDuration;
+	/*if (animTime > animDuration)
+		animTime -= animDuration;*/
 
-	DiloxGE::Renderer2D::DrawQuad(m_SquarePos, m_SquareScale, anim[(animTime/animDuration) * anim.size()]);
+
+	DiloxGE::Renderer2D::DrawQuad(m_SquarePos, m_SquareScale, anim[static_cast<int>((animTime / animDuration) * anim.size()) % anim.size()]);
 
 	DiloxGE::Renderer2D::EndScene();
 
@@ -106,7 +108,7 @@ void Sandbox2D::OnImGuiRender()
 
 	ImGui::DragFloat2("Scale", glm::value_ptr(m_SquareScale), 0.1f);
 
-	ImGui::DragFloat("Animation Duration Time", &animDuration, 0.1f);
+	ImGui::DragFloat("Animation Duration Time", &animSpeed, 0.1f);
 
 	ImGui::End();
 }
