@@ -2,6 +2,14 @@
 
 #include "DiloxGE.h"
 
+struct Player
+{
+	glm::vec4 m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
+	float m_SquareRotation = 0;
+	glm::vec2 m_SquarePos = { 0.0f,0.0f };
+	glm::vec2 m_SquareScale = { 1.0f,1.0f };
+};
+
 class Sandbox2D : public DiloxGE::Layer
 {
 public:
@@ -18,6 +26,9 @@ public:
 private:
 	DiloxGE::OrthographicCameraController m_CameraController;
 
+	Player player1;
+	Player player2;
+
 	// Temp
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
 	DiloxGE::Ref<DiloxGE::Shader> m_FlatColorShader;
@@ -30,14 +41,4 @@ private:
 	float animTime = 0.0f;
 	float animDuration = 3.0f;
 	float animSpeed = 1.0f;
-
-	glm::vec4 m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
-	float m_SquareRotation = 0;
-	glm::vec2 m_SquarePos = { 0.0f,0.0f };
-	glm::vec2 m_SquareScale = { 1.0f,1.0f };
-
-	glm::vec4 m_SquareColor2 = { 0.2f,0.3f,0.8f,1.0f };
-	float m_SquareRotation2 = 0;
-	glm::vec2 m_SquarePos2 = { 0.0f,0.0f };
-	glm::vec2 m_SquareScale2 = { 1.0f,1.0f };
 };
