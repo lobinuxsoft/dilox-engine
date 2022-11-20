@@ -14,24 +14,20 @@ void Sandbox2D::OnAttach()
 	//m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
 
-	//m_TextureStairs = DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 6 }, { 128, 128 });
-	//m_TextureBarrel = DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 8, 2 }, { 128, 128 });
-	//m_TextureTree = DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 128, 128 }, { 1, 2 });
-
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 1 }, { 128, 128 }, { 1, 2 }));
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 128, 128 }, { 1, 2 }));
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 4, 1 }, { 128, 128 }, { 1, 2 }));
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 1 }, { 128, 128 }, { 1, 2 }));
 
-	player1.m_SquarePos = { 0.0f,0.0f };
-	player1.m_SquareScale = { 1.0f,1.0f };
-	player1.m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
-	player1.m_SquareRotation = 0;
+	player1.position = { 0.0f,0.0f };
+	player1.scale = { 1.0f,1.0f };
+	player1.color = { 0.2f,0.3f,0.8f,1.0f };
+	player1.rotation = 0;
 
-	player2.m_SquarePos = { 1.0f,1.0f };
-	player2.m_SquareScale = { 1.0f,1.0f };
-	player2.m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
-	player2.m_SquareRotation = 0;
+	player2.position = { 1.0f,1.0f };
+	player2.scale = { 1.0f,1.0f };
+	player2.color = { 0.2f,0.3f,0.8f,1.0f };
+	player2.rotation = 0;
 }
 
 void Sandbox2D::OnDetach()
@@ -63,20 +59,27 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	
 	animTime += ts * animSpeed;
 
-	/*if (animTime > animDuration)
-		animTime -= animDuration;*/
+	if (animTime > animDuration)
+		animTime -= animDuration;
 
 
-	DiloxGE::Renderer2D::DrawQuad(player1.m_SquarePos, player1.m_SquareScale, anim[static_cast<int>((animTime / animDuration) * anim.size()) % anim.size()]);
+	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, anim[static_cast<int>((animTime / animDuration) * anim.size()) % anim.size()]);
 
-	DiloxGE::Renderer2D::DrawQuad(player2.m_SquarePos, player2.m_SquareScale, glm::vec4(1, 1, 1, 1));
+	DiloxGE::Renderer2D::DrawQuad(player2.position, player2.scale, glm::vec4(1, 1, 1, 1));
 
-	if (player1.m_SquarePos.x < player2.m_SquarePos.x + player2.m_SquareScale.x &&
-		player1.m_SquarePos.x + player1.m_SquareScale.x > player2.m_SquarePos.x &&
-		player1.m_SquarePos.y < player2.m_SquarePos.y + player2.m_SquareScale.y &&
-		player1.m_SquarePos.y + player1.m_SquareScale.y > player2.m_SquarePos.y)
+	if (player1.position.x < player2.position.x + player2.scale.x &&
+		player1.position.x + player1.scale.x > player2.position.x &&
+		player1.position.y < player2.position.y + player2.scale.y &&
+		player1.position.y + player1.scale.y > player2.position.y)
 	{
-		printf("Collision detected");
+		if (player1.position.x > player2.position.x)
+		{
+			player2.position.x -= 0.1f;
+		}
+		if (player1.position.x < player2.position.x)
+		{
+			player2.position.x += 0.1f;
+		}
 	}
 
 	DiloxGE::Renderer2D::EndScene();
@@ -114,25 +117,25 @@ void Sandbox2D::OnImGuiRender()
 
 	ImGui::ColorEdit4(
 		"Square Color",
-		glm::value_ptr(player1.m_SquareColor),
+		glm::value_ptr(player1.color),
 		ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_AlphaBar
 	);
 
-	ImGui::DragFloat2("Translation", glm::value_ptr(player1.m_SquarePos), 0.1f);
+	ImGui::DragFloat2("Translation", glm::value_ptr(player1.position), 0.1f);
 
-	ImGui::DragFloat("Rotation", &player1.m_SquareRotation, 1.0f);
-
-	//m_SquareRotation = m_SquareRotation >= 360.0f || m_SquareRotation <= -360.0f ? 0 : m_SquareRotation;
-
-	ImGui::DragFloat2("Scale", glm::value_ptr(player1.m_SquareScale), 0.1f);
-
-	ImGui::DragFloat2("Translation2", glm::value_ptr(player2.m_SquarePos), 0.1f);
-
-	ImGui::DragFloat("Rotation2", &player2.m_SquareRotation, 1.0f);
+	//ImGui::DragFloat("Rotation", &player1.rotation, 1.0f);
 
 	//m_SquareRotation = m_SquareRotation >= 360.0f || m_SquareRotation <= -360.0f ? 0 : m_SquareRotation;
 
-	ImGui::DragFloat2("Scale2", glm::value_ptr(player2.m_SquareScale), 0.1f);
+	ImGui::DragFloat2("Scale", glm::value_ptr(player1.scale), 0.1f);
+
+	ImGui::DragFloat2("Translation2", glm::value_ptr(player2.position), 0.1f);
+
+	//ImGui::DragFloat("Rotation2", &player2.rotation, 1.0f);
+
+	//m_SquareRotation = m_SquareRotation >= 360.0f || m_SquareRotation <= -360.0f ? 0 : m_SquareRotation;
+
+	ImGui::DragFloat2("Scale2", glm::value_ptr(player2.scale), 0.1f);
 
 	ImGui::DragFloat("Animation Duration Time", &animSpeed, 0.1f);
 
