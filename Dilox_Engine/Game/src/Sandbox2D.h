@@ -33,7 +33,7 @@ private:
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
 	DiloxGE::Ref<DiloxGE::Shader> m_FlatColorShader;
 
-	//DiloxGE::Ref<DiloxGE::Texture2D> m_CheckerboardTexture;
+	DiloxGE::Ref<DiloxGE::Texture2D> m_CheckerboardTexture;
 	DiloxGE::Ref<DiloxGE::Texture2D> m_SpriteSheet;
 	//DiloxGE::Ref<DiloxGE::SubTexture2D> m_TextureStairs, m_TextureBarrel, m_TextureTree;
 	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> anim;

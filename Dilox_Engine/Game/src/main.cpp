@@ -10,7 +10,7 @@ class Sandbox : public DiloxGE::BaseGame
 public:
 	Sandbox()
 	{
-		// PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
 		PushLayer(new Sandbox2D());
 	}
 	~Sandbox() { }

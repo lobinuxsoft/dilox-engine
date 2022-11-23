@@ -11,7 +11,7 @@ void Sandbox2D::OnAttach()
 {
 	DGE_PROFILE_FUNCTION();
 
-	//m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
+	m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
 
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 3 }, { 64, 64 }, { 1, 1 }));
@@ -53,6 +53,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 
 	DGE_PROFILE_SCOPE("Renderer Draw");
 	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	
 	//DiloxGE::Renderer2D::DrawQuad({1,0}, {1,1}, m_TextureStairs);
 	//DiloxGE::Renderer2D::DrawQuad({0,1}, {1,1}, m_TextureBarrel);
 	//DiloxGE::Renderer2D::DrawQuad({0,-1}, {1.0f,1.5f}, m_TextureTree);
@@ -63,7 +64,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		animTime -= animDuration;
 
 
-	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, anim[static_cast<int>((animTime / animDuration) * anim.size()) % anim.size()]);
+	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, anim[static_cast<int>((animTime / animDuration) * anim.size()) % anim.size()], 1.0f, player1.color);
 
 	DiloxGE::Renderer2D::DrawQuad(player2.position, player2.scale, glm::vec4(1, 1, 1, 1));
 
@@ -81,6 +82,8 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 			player2.position.x += 0.1f;
 		}
 	}
+
+	DiloxGE::Renderer2D::DrawQuad({ 0,0 }, { 10,10 }, m_CheckerboardTexture);
 
 	DiloxGE::Renderer2D::EndScene();
 
