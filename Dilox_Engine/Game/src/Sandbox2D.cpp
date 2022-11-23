@@ -12,12 +12,12 @@ void Sandbox2D::OnAttach()
 	DGE_PROFILE_FUNCTION();
 
 	//m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
-	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
+	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
 
-	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 1 }, { 128, 128 }, { 1, 2 }));
-	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 128, 128 }, { 1, 2 }));
-	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 4, 1 }, { 128, 128 }, { 1, 2 }));
-	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 1 }, { 128, 128 }, { 1, 2 }));
+	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 3 }, { 64, 64 }, { 1, 1 }));
+	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 64, 64 }, { 1, 1 }));
+	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 3 }, { 64, 64 }, { 1, 1 }));
+	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 3 }, { 64, 64 }, { 1, 1 }));
 
 	player1.position = { 0.0f,0.0f };
 	player1.scale = { 1.0f,1.0f };
