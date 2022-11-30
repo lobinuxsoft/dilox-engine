@@ -11,7 +11,7 @@ void Sandbox2D::OnAttach()
 {
 	DGE_PROFILE_FUNCTION();
 
-	m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
+	//m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
 
 	anim.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 3 }, { 64, 64 }, { 1, 1 }));
@@ -83,7 +83,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		}
 	}
 
-	DiloxGE::Renderer2D::DrawQuad({ 0,0 }, { 10,10 }, m_CheckerboardTexture);
+	//DiloxGE::Renderer2D::DrawQuad({ 0,0 }, { 10,10 }, m_CheckerboardTexture);
 
 	DiloxGE::Renderer2D::EndScene();
 
