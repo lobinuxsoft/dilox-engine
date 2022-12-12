@@ -123,6 +123,13 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	
 	DiloxGE::Renderer2D::DrawQuad(player2.position, player2.scale, m_TextureBarrel);
 
+	CheckCollision(player1, player2);
+
+	DiloxGE::Renderer2D::EndScene();
+}
+
+void Sandbox2D::CheckCollision(Player player1, Player player2)
+{
 	if (player1.position.x < player2.position.x + player2.scale.x &&
 		player1.position.x + player1.scale.x > player2.position.x &&
 		player1.position.y < player2.position.y + player2.scale.y &&
@@ -134,8 +141,6 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 
 		player1.position -= dir * (dist * 0.025f);
 	}
-
-	DiloxGE::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()
@@ -183,3 +188,4 @@ void Sandbox2D::OnEvent(DiloxGE::Event& e)
 {
 	m_CameraController.OnEvent(e);
 }
+
