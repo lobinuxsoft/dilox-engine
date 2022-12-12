@@ -58,7 +58,9 @@ private:
 
 	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animRoy;
 
-	void CheckCollision(Player player1, Player player2);
+	void CheckCollision(Player& player1, Player& player2);
+	void CreateAnimations();
+	void SetTransforms();
 
 	int animIndex = 0;
 	float animTime = 0.0f;
