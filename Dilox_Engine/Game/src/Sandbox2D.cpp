@@ -39,8 +39,8 @@ void Sandbox2D::OnAttach()
 	m_GrassTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 1,11 }, { 128,128 }, { 1,1 });
 	m_WaterTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 11,11 }, { 128,128 }, { 1,1 });
 
-	s_TextureMap['G'] = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 1,11 }, { 128,128 }, { 1,1 });
-	s_TextureMap['W'] = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 11,11 }, { 128,128 }, { 1,1 });
+	s_TextureMap['G'] = m_GrassTile;
+	s_TextureMap['W'] = m_WaterTile;
 
 	SetTransforms();
 
@@ -72,32 +72,29 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	DGE_PROFILE_SCOPE("Renderer Draw");
 	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
+	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
+
 	for (int y = 0; y < m_MapHeight; y++)
 	{
 		for (int x = 0; x < m_MapWidth; x++)
 		{
 			char tileType = s_MapTiles[x + y * m_MapWidth];
-			DiloxGE::Ref<DiloxGE::SubTexture2D> texture;
 
 			if (s_TextureMap.find(tileType) != s_TextureMap.end())
 			{
-				texture = s_TextureMap[tileType];
+				tileTexture = s_TextureMap[tileType];
 			}
 			else
 			{
-				texture = m_GrassTile;
+				tileTexture = m_GrassTile;
 			}
 
-			//DiloxGE::Renderer2D::DrawQuad({ x - m_MapWidth / 2.0f, y - m_MapHeight / 2.0f, 0.5f }, { 1.0f,1.0f }, texture);
-			DiloxGE::Renderer2D::DrawQuad({ m_MapWidth - x - m_MapWidth / 2.0f,m_MapHeight - y - m_MapHeight / 2.0f, 0.5f }, { 1.0f,1.0f }, texture);
+			DiloxGE::Renderer2D::DrawQuad({ m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f }, {1,1}, tileTexture, 1.0f, player3.color);
 		}
 	}
 
-	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
 
-	DiloxGE::Renderer2D::DrawQuad(player3.position, player3.scale, player3.animations[0]->Animate(ts), 1.0f, player3.color);
-
-	CheckCollision(player1, player2);
+	//CheckCollision(player1, player2);
 
 	DiloxGE::Renderer2D::EndScene();
 }

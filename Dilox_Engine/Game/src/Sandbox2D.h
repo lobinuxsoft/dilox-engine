@@ -59,6 +59,8 @@ private:
 
 	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animRoy;
 
+	DiloxGE::Ref<DiloxGE::SubTexture2D> tileTexture;
+
 	void CheckCollision(Player& player1, Player& player2);
 	void CreateAnimations();
 	void SetTransforms();
@@ -68,6 +70,8 @@ private:
 	float animTime = 0.0f;
 	float animDuration = 3.0f;
 	float animSpeed = 1.0f;
+
+	bool firstInit = false;
 
 	int m_MapWidth, m_MapHeight;
 
