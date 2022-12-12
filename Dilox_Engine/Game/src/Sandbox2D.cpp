@@ -4,6 +4,21 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+static const int s_MapWidth = 24;
+static const char* s_MapTiles =
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+"WGGWWWWWWWGGGGGGGGGGGGGW"
+"WGGGGGWWGGGGGGGGGGGGGGGW"
+"WGGGGGGGGGGGGGGGGGGGGGGW"
+"WGGGGGGGGGGWWWWWGGGGGGGW"
+"WGGGGGGGGGGGGGGGGGGGGGGW"
+"WGGGGGGGGGGGGGGGGGGGGGGW"
+"WGGWWGGGGGGGGGGGGGGGGGGW"
+"WGGGGWWWWWWWGGGGGWWWGGGW"
+"WGGGGGGGGGGGGGGWWWWGGGGW"
+"WGGGWWWWGGGGGGGGGGGGGGGW"
+"WWWWWWWWWWWWWWWWWWWWWWWW"
+;
 
 Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f, true) { }
 
@@ -11,17 +26,25 @@ void Sandbox2D::OnAttach()
 {
 	DGE_PROFILE_FUNCTION();
 
-	//m_CheckerboardTexture = DiloxGE::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
+
 	m_Atlas = DiloxGE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
-	m_TextureBarrel = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 9,2 }, { 128,128 }, { 1,1 });
 
 	m_RoyAtlas = DiloxGE::Texture2D::Create("assets/game/textures/Roy.png");
+
+	m_MapWidth = s_MapWidth;
+
+	m_MapHeight = strlen(s_MapTiles) / s_MapWidth;
+
+	m_GrassTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 1,11 }, { 128,128 }, { 1,1 });
+	m_WaterTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 11,11 }, { 128,128 }, { 1,1 });
+
+	s_TextureMap['G'] = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 1,11 }, { 128,128 }, { 1,1 });
+	s_TextureMap['W'] = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 11,11 }, { 128,128 }, { 1,1 });
 
 	SetTransforms();
 
 	CreateAnimations();
-
 }
 
 void Sandbox2D::OnDetach()
@@ -32,6 +55,8 @@ void Sandbox2D::OnDetach()
 void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 {
 	DGE_PROFILE_FUNCTION();
+
+	CheckInput(ts);
 
 	// Update
 	m_CameraController.OnUpdate(ts);
@@ -44,43 +69,33 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		DiloxGE::RenderCommand::Clear();
 	}
 
-
 	DGE_PROFILE_SCOPE("Renderer Draw");
 	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	
-	//DiloxGE::Renderer2D::DrawQuad({1,0}, {1,1}, m_TextureStairs);
-	//DiloxGE::Renderer2D::DrawQuad({0,1}, {1,1}, m_TextureBarrel);
-	//DiloxGE::Renderer2D::DrawQuad({0,-1}, {1.0f,1.5f}, m_TextureTree);
 
-	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_LEFT))
+	for (int y = 0; y < m_MapHeight; y++)
 	{
-		animIndex = 2;
-		player1.position.x -= ts;
-	}
+		for (int x = 0; x < m_MapWidth; x++)
+		{
+			char tileType = s_MapTiles[x + y * m_MapWidth];
+			DiloxGE::Ref<DiloxGE::SubTexture2D> texture;
 
-	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_RIGHT))
-	{
-		animIndex = 3;
-		player1.position.x += ts;
-	}
+			if (s_TextureMap.find(tileType) != s_TextureMap.end())
+			{
+				texture = s_TextureMap[tileType];
+			}
+			else
+			{
+				texture = m_GrassTile;
+			}
 
-	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_UP))
-	{
-		animIndex = 1;
-		player1.position.y += ts;
-	}
-
-	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_DOWN))
-	{
-		animIndex = 0;
-		player1.position.y -= ts;
+			//DiloxGE::Renderer2D::DrawQuad({ x - m_MapWidth / 2.0f, y - m_MapHeight / 2.0f, 0.5f }, { 1.0f,1.0f }, texture);
+			DiloxGE::Renderer2D::DrawQuad({ m_MapWidth - x - m_MapWidth / 2.0f,m_MapHeight - y - m_MapHeight / 2.0f, 0.5f }, { 1.0f,1.0f }, texture);
+		}
 	}
 
 	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
-	
+
 	DiloxGE::Renderer2D::DrawQuad(player3.position, player3.scale, player3.animations[0]->Animate(ts), 1.0f, player3.color);
-	
-	DiloxGE::Renderer2D::DrawQuad(player2.position, player2.scale, m_TextureBarrel);
 
 	CheckCollision(player1, player2);
 
@@ -157,6 +172,33 @@ void Sandbox2D::SetTransforms()
 	player2.rotation = 0;
 }
 
+void Sandbox2D::CheckInput(DiloxGE::Timestep ts)
+{
+	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_LEFT))
+	{
+		animIndex = 2;
+		player1.position.x -= ts;
+	}
+
+	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_RIGHT))
+	{
+		animIndex = 3;
+		player1.position.x += ts;
+	}
+
+	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_UP))
+	{
+		animIndex = 1;
+		player1.position.y += ts;
+	}
+
+	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_DOWN))
+	{
+		animIndex = 0;
+		player1.position.y -= ts;
+	}
+}
+
 void Sandbox2D::OnImGuiRender()
 {
 	DGE_PROFILE_FUNCTION();
@@ -178,17 +220,9 @@ void Sandbox2D::OnImGuiRender()
 
 	ImGui::DragFloat2("Translation", glm::value_ptr(player1.position), 0.1f);
 
-	//ImGui::DragFloat("Rotation", &player1.rotation, 1.0f);
-
-	//m_SquareRotation = m_SquareRotation >= 360.0f || m_SquareRotation <= -360.0f ? 0 : m_SquareRotation;
-
 	ImGui::DragFloat2("Scale", glm::value_ptr(player1.scale), 0.1f);
 
 	ImGui::DragFloat2("Translation2", glm::value_ptr(player2.position), 0.1f);
-
-	//ImGui::DragFloat("Rotation2", &player2.rotation, 1.0f);
-
-	//m_SquareRotation = m_SquareRotation >= 360.0f || m_SquareRotation <= -360.0f ? 0 : m_SquareRotation;
 
 	ImGui::DragFloat2("Scale2", glm::value_ptr(player2.scale), 0.1f);
 

@@ -49,7 +49,8 @@ private:
 	DiloxGE::Ref<DiloxGE::Texture2D> m_Atlas;
 	DiloxGE::Ref<DiloxGE::Texture2D> m_RoyAtlas;
 
-	DiloxGE::Ref<DiloxGE::SubTexture2D> m_TextureBarrel;
+	DiloxGE::Ref<DiloxGE::SubTexture2D> m_GrassTile;
+	DiloxGE::Ref<DiloxGE::SubTexture2D> m_WaterTile;
 
 	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animDown;
 	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animUp;
@@ -61,9 +62,14 @@ private:
 	void CheckCollision(Player& player1, Player& player2);
 	void CreateAnimations();
 	void SetTransforms();
+	void CheckInput(DiloxGE::Timestep ts);
 
 	int animIndex = 0;
 	float animTime = 0.0f;
 	float animDuration = 3.0f;
 	float animSpeed = 1.0f;
+
+	int m_MapWidth, m_MapHeight;
+
+	std::unordered_map<char, DiloxGE::Ref<DiloxGE::SubTexture2D>> s_TextureMap;
 };
