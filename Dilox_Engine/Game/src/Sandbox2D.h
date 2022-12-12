@@ -2,7 +2,7 @@
 
 #include "DiloxGE.h"
 
-struct Player
+struct Entity
 {
 	glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
 	float rotation = 0;
@@ -17,6 +17,13 @@ struct Player
 
 		return animations[index]->Animate(delta);
 	}
+};
+
+struct Tile
+{
+	char tileType;
+	glm::vec2 position;
+	glm::vec2 scale = { 1.0f,1.0f };
 };
 
 class Sandbox2D : public DiloxGE::Layer
@@ -35,9 +42,10 @@ public:
 private:
 	DiloxGE::OrthographicCameraController m_CameraController;
 
-	Player player1;
-	Player player2;
-	Player player3;
+	Entity player1;
+	Entity player2;
+	Entity player3;
+	Tile auxTile[32][32];
 
 	// Temp
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
@@ -61,7 +69,9 @@ private:
 
 	DiloxGE::Ref<DiloxGE::SubTexture2D> tileTexture;
 
-	void CheckCollision(Player& player1, Player& player2);
+	bool CheckCollision(Entity& player1, Entity& player2);
+	bool CheckCollision(Entity& player1, Tile& tile);
+
 	void CreateAnimations();
 	void SetTransforms();
 	void CheckInput(DiloxGE::Timestep ts);

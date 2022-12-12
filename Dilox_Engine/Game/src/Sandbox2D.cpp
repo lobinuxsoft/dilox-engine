@@ -78,28 +78,38 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	{
 		for (int x = 0; x < m_MapWidth; x++)
 		{
-			char tileType = s_MapTiles[x + y * m_MapWidth];
+			auxTile[y][x].tileType = s_MapTiles[x + y * m_MapWidth];
+			//char tileType = s_MapTiles[x + y * m_MapWidth];
 
-			if (s_TextureMap.find(tileType) != s_TextureMap.end())
+			if (s_TextureMap.find(auxTile[y][x].tileType) != s_TextureMap.end())
 			{
-				tileTexture = s_TextureMap[tileType];
+				tileTexture = s_TextureMap[auxTile[y][x].tileType];
 			}
 			else
 			{
 				tileTexture = m_GrassTile;
 			}
 
-			DiloxGE::Renderer2D::DrawQuad({ m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f }, {1,1}, tileTexture, 1.0f, player3.color);
+			auxTile[y][x].position = { m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f };
+
+			DiloxGE::Renderer2D::DrawQuad(auxTile[y][x].position, { 1,1 }, tileTexture, 1.0f, player3.color);
 		}
 	}
 
+	for (int y = 0; y < m_MapHeight; y++)
+	{
+		for (int x = 0; x < m_MapWidth; x++)
+		{
+			CheckCollision(player1, auxTile[y][x]);
+		}
+	}
 
 	//CheckCollision(player1, player2);
 
 	DiloxGE::Renderer2D::EndScene();
 }
 
-void Sandbox2D::CheckCollision(Player& player1, Player& player2)
+bool Sandbox2D::CheckCollision(Entity& player1, Entity& player2)
 {
 	if (player1.position.x < player2.position.x + player2.scale.x &&
 		player1.position.x + player1.scale.x > player2.position.x &&
@@ -111,8 +121,39 @@ void Sandbox2D::CheckCollision(Player& player1, Player& player2)
 		float dist = glm::distance(player1.position, player2.position);
 
 		player1.position -= dir * (dist * 0.025f);
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
+
+bool Sandbox2D::CheckCollision(Entity& player1, Tile& tile)
+{
+	if (player1.position.x < tile.position.x + tile.scale.x &&
+		player1.position.x + player1.scale.x > tile.position.x &&
+		player1.position.y < tile.position.y + tile.scale.y &&
+		player1.position.y + player1.scale.y > tile.position.y)
+	{
+		if (tile.tileType == 'W')
+		{
+			glm::vec2 dir = tile.position - player1.position;
+			dir = glm::normalize(dir);
+			float dist = glm::distance(player1.position, tile.position);
+
+			player1.position -= dir * (dist * 0.025f);
+
+			std::cout << "colisiono";
+			return true;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 void Sandbox2D::CreateAnimations()
 {
@@ -160,12 +201,12 @@ void Sandbox2D::SetTransforms()
 
 	player1.position = { 0.0f,0.0f };
 	player1.scale = { 1.0f,1.0f };
-	player1.color = { 0.2f,0.3f,0.8f,1.0f };
+	player1.color = { 1.0f,1.0f,1.0f,1.0f };
 	player1.rotation = 0;
 
 	player2.position = { 1.0f,1.0f };
 	player2.scale = { 1.0f,1.0f };
-	player2.color = { 0.2f,0.3f,0.8f,1.0f };
+	player2.color = { 1.0f,1.0f,1.0f,1.0f };
 	player2.rotation = 0;
 }
 
