@@ -78,8 +78,8 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	{
 		for (int x = 0; x < m_MapWidth; x++)
 		{
+			//Esto deberia ir en una funcion de CreateTileMap
 			auxTile[y][x].tileType = s_MapTiles[x + y * m_MapWidth];
-			//char tileType = s_MapTiles[x + y * m_MapWidth];
 
 			if (s_TextureMap.find(auxTile[y][x].tileType) != s_TextureMap.end())
 			{
@@ -90,6 +90,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 				tileTexture = m_GrassTile;
 			}
 
+			//Esto deberia ir en una funcion de CreateTileMap
 			auxTile[y][x].position = { m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f };
 
 			DiloxGE::Renderer2D::DrawQuad(auxTile[y][x].position, { 1,1 }, tileTexture, 1.0f, player3.color);
@@ -100,11 +101,13 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	{
 		for (int x = 0; x < m_MapWidth; x++)
 		{
-			CheckCollision(player1, auxTile[y][x]);
+			if (glm::abs(auxTile[y][x].position.x - player1.position.x) < 5.0f
+				&& glm::abs(auxTile[y][x].position.y - player1.position.y) < 5.0f)
+			{
+				CheckCollision(player1, auxTile[y][x]);
+			}
 		}
 	}
-
-	//CheckCollision(player1, player2);
 
 	DiloxGE::Renderer2D::EndScene();
 }
