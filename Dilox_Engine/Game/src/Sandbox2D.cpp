@@ -4,6 +4,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+static const float tilemapWidth = 17;
+static const float tilemapHeight = 16;
+
+static const float playerSpeed = 3;
+
 static const int s_MapWidth = 24;
 static const char* s_MapTiles =
 "WWWWWWWWWWWWWWWWWWWWWWWW"
@@ -26,9 +31,11 @@ void Sandbox2D::OnAttach()
 {
 	DGE_PROFILE_FUNCTION();
 
-	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
+	//m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
 
-	m_Atlas = DiloxGE::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
+	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/Link.png");
+
+	m_Atlas = DiloxGE::Texture2D::Create("assets/game/textures/LinkTileMap.png");
 
 	m_RoyAtlas = DiloxGE::Texture2D::Create("assets/game/textures/Roy.png");
 
@@ -36,8 +43,8 @@ void Sandbox2D::OnAttach()
 
 	m_MapHeight = strlen(s_MapTiles) / s_MapWidth;
 
-	m_GrassTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 1,11 }, { 128,128 }, { 1,1 });
-	m_WaterTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 11,11 }, { 128,128 }, { 1,1 });
+	m_GrassTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 15,8.5f }, { 18.2f,18 }, { 1,1 });
+	m_WaterTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 3.7f,20.85f }, { 18.4f,18 }, { 1,1 });
 
 	s_TextureMap['G'] = m_GrassTile;
 	s_TextureMap['W'] = m_WaterTile;
@@ -102,8 +109,8 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 		for (int x = 0; x < m_MapWidth; x++)
 		{
 			//Chequea si el tile esta dentro de un rango del jugador, para hacer el chequeo de colisiones
-			if (glm::abs(auxTile[y][x].position.x - player1.position.x) < 5.0f
-				&& glm::abs(auxTile[y][x].position.y - player1.position.y) < 5.0f)
+			if (glm::abs(auxTile[y][x].position.x - player1.position.x) < 2.0f
+				&& glm::abs(auxTile[y][x].position.y - player1.position.y) < 2.0f)
 			{
 				CheckCollision(player1, auxTile[y][x]);
 			}
@@ -116,7 +123,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 bool Sandbox2D::CheckCollision(Entity& player1, Entity& player2)
 {
 	if (player1.position.x < player2.position.x + player2.scale.x &&
-		player1.position.x + player1.scale.x > player2.position.x &&
+		player1.position.x + player1.scale.x > player2.position.x&&
 		player1.position.y < player2.position.y + player2.scale.y &&
 		player1.position.y + player1.scale.y > player2.position.y)
 	{
@@ -124,7 +131,7 @@ bool Sandbox2D::CheckCollision(Entity& player1, Entity& player2)
 		dir = glm::normalize(dir);
 		float dist = glm::distance(player1.position, player2.position);
 
-		player1.position -= dir * (dist * 0.025f);
+		player1.position -= dir * (dist * 0.025f * playerSpeed);
 		return true;
 	}
 	else
@@ -136,17 +143,18 @@ bool Sandbox2D::CheckCollision(Entity& player1, Entity& player2)
 bool Sandbox2D::CheckCollision(Entity& player1, Tile& tile)
 {
 	if (player1.position.x < tile.position.x + tile.scale.x &&
-		player1.position.x + player1.scale.x > tile.position.x &&
+		player1.position.x + player1.scale.x > tile.position.x&&
 		player1.position.y < tile.position.y + tile.scale.y &&
 		player1.position.y + player1.scale.y > tile.position.y)
 	{
 		if (tile.tileType == 'W')
 		{
+			//Si el tile es Water (W), te mueve hacia atras, dando a entender que estas "colisionando"
 			glm::vec2 dir = tile.position - player1.position;
 			dir = glm::normalize(dir);
 			float dist = glm::distance(player1.position, tile.position);
 
-			player1.position -= dir * (dist * 0.025f);
+			player1.position -= dir * (dist * 0.025f * playerSpeed);
 
 			std::cout << "colisiono";
 			return true;
@@ -170,25 +178,33 @@ void Sandbox2D::CreateAnimations()
 
 	player3.animations.push_back(DiloxGE::Animation::Create(animRoy, 16));
 
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 3 }, { 64, 64 }, { 1, 1 }));
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 64, 64 }, { 1, 1 }));
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 3 }, { 64, 64 }, { 1, 1 }));
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 3 }, { 64, 64 }, { 1, 1 }));
+	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 15 }, { 16, 16 }, { 1, 1 }));
+	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 15 }, { 16, 16 }, { 1, 1 }));
 
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 0 }, { 64, 64 }, { 1, 1 }));
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 0 }, { 64, 64 }, { 1, 1 }));
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 0 }, { 64, 64 }, { 1, 1 }));
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 0 }, { 64, 64 }, { 1, 1 }));
+	//animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 16, 16 }, { 1, 1 }));
+	/*animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 3 }, { 16, 16 }, { 1, 1 }));
+	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 3 }, { 16, 16 }, { 1, 1 }));*/
 
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 2 }, { 64, 64 }, { 1, 1 }));
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 2 }, { 64, 64 }, { 1, 1 }));
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 2 }, { 64, 64 }, { 1, 1 }));
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 2 }, { 64, 64 }, { 1, 1 }));
+	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 15 }, { 16, 16 }, { 1, 1 }));
+	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 15 }, { 16, 16 }, { 1, 1 }));
 
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 1 }, { 64, 64 }, { 1, 1 }));
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 1 }, { 64, 64 }, { 1, 1 }));
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 64, 64 }, { 1, 1 }));
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 1 }, { 64, 64 }, { 1, 1 }));
+	/*animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 0 }, { 16, 16 }, { 1, 1 }));
+	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 0 }, { 16, 16 }, { 1, 1 }));
+	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 0 }, { 16, 16 }, { 1, 1 }));*/
+
+	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 4, 15 }, { 16, 16 }, { 1, 1 }));
+	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 5, 15 }, { 16, 16 }, { 1, 1 }));
+
+	/*animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 2 }, { 16, 16 }, { 1, 1 }));
+	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 2 }, { 16, 16 }, { 1, 1 }));
+	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 2 }, { 16, 16 }, { 1, 1 }));*/
+
+	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 15 }, { 16, 16 }, { 1, 1 }));
+	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 15 }, { 16, 16 }, { 1, 1 }));
+
+	//animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 0 }, { 16, 16 }, { 1, 1 }));
+	/*animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 16, 16 }, { 1, 1 }));
+	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 1 }, { 16, 16 }, { 1, 1 }));*/
 
 	player1.animations.push_back(DiloxGE::Animation::Create(animDown, 16));
 	player1.animations.push_back(DiloxGE::Animation::Create(animUp, 16));
@@ -219,25 +235,25 @@ void Sandbox2D::CheckInput(DiloxGE::Timestep ts)
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_LEFT))
 	{
 		animIndex = 2;
-		player1.position.x -= ts;
+		player1.position.x -= playerSpeed * ts;
 	}
 
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_RIGHT))
 	{
 		animIndex = 3;
-		player1.position.x += ts;
+		player1.position.x += playerSpeed * ts;
 	}
 
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_UP))
 	{
 		animIndex = 1;
-		player1.position.y += ts;
+		player1.position.y += playerSpeed * ts;
 	}
 
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_DOWN))
 	{
 		animIndex = 0;
-		player1.position.y -= ts;
+		player1.position.y -= playerSpeed * ts;
 	}
 }
 
