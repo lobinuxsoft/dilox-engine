@@ -78,7 +78,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	{
 		for (int x = 0; x < m_MapWidth; x++)
 		{
-			//Esto deberia ir en una funcion de CreateTileMap
+			//Le asigno el char al tile
 			auxTile[y][x].tileType = s_MapTiles[x + y * m_MapWidth];
 
 			if (s_TextureMap.find(auxTile[y][x].tileType) != s_TextureMap.end())
@@ -101,6 +101,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	{
 		for (int x = 0; x < m_MapWidth; x++)
 		{
+			//Chequea si el tile esta dentro de un rango del jugador, para hacer el chequeo de colisiones
 			if (glm::abs(auxTile[y][x].position.x - player1.position.x) < 5.0f
 				&& glm::abs(auxTile[y][x].position.y - player1.position.y) < 5.0f)
 			{
