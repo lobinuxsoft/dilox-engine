@@ -166,45 +166,20 @@ bool Sandbox2D::CheckCollision(Entity& player1, Tile& tile)
 	}
 }
 
-
 void Sandbox2D::CreateAnimations()
 {
-	animRoy.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_RoyAtlas, { 0, 0 }, { 64, 64 }, { 1, 1 }));
-	animRoy.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_RoyAtlas, { 1, 0 }, { 64, 64 }, { 1, 1 }));
-	animRoy.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_RoyAtlas, { 2, 0 }, { 64, 64 }, { 1, 1 }));
-	animRoy.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_RoyAtlas, { 3, 0 }, { 64, 64 }, { 1, 1 }));
-	animRoy.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_RoyAtlas, { 4, 0 }, { 64, 64 }, { 1, 1 }));
-	animRoy.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_RoyAtlas, { 5, 0 }, { 64, 64 }, { 1, 1 }));
-
-	player3.animations.push_back(DiloxGE::Animation::Create(animRoy, 16));
-
 	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 15 }, { 16, 16 }, { 1, 1 }));
 	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 15 }, { 16, 16 }, { 1, 1 }));
-
-	//animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 16, 16 }, { 1, 1 }));
-	/*animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 3 }, { 16, 16 }, { 1, 1 }));
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 3 }, { 16, 16 }, { 1, 1 }));*/
 
 	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 15 }, { 16, 16 }, { 1, 1 }));
 	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 15 }, { 16, 16 }, { 1, 1 }));
 
-	/*animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 0 }, { 16, 16 }, { 1, 1 }));
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 0 }, { 16, 16 }, { 1, 1 }));
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 0 }, { 16, 16 }, { 1, 1 }));*/
-
 	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 4, 15 }, { 16, 16 }, { 1, 1 }));
 	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 5, 15 }, { 16, 16 }, { 1, 1 }));
 
-	/*animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 2 }, { 16, 16 }, { 1, 1 }));
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 2 }, { 16, 16 }, { 1, 1 }));
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 2 }, { 16, 16 }, { 1, 1 }));*/
-
+			
 	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 15 }, { 16, 16 }, { 1, 1 }));
 	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 15 }, { 16, 16 }, { 1, 1 }));
-
-	//animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 0 }, { 16, 16 }, { 1, 1 }));
-	/*animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 1 }, { 16, 16 }, { 1, 1 }));
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 1 }, { 16, 16 }, { 1, 1 }));*/
 
 	player1.animations.push_back(DiloxGE::Animation::Create(animDown, 16));
 	player1.animations.push_back(DiloxGE::Animation::Create(animUp, 16));

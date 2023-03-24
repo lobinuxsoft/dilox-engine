@@ -22,7 +22,7 @@ namespace DiloxGE
 			case ShaderDataType::Bool:		return GL_BOOL;
 		}
 
-		DGE_CORE_ASSERT(false, "Unknoen ShaderDataType!");
+		DGE_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 
