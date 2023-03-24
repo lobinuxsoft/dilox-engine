@@ -27,7 +27,7 @@ namespace DiloxGE
 		glm::vec2 delta = (mousePos - m_LastMousePosition) * 0.002f;
 		m_LastMousePosition = mousePos;
 
-		constexpr glm::vec3 upDirection(0.0f, 1.0f, 0.0f);
+		//constexpr glm::vec3 upDirection(0.0f, 1.0f, 0.0f);
 
 		//IZQUIERDA
 		if (Input::IsKeyPressed(DGE_KEY_A))
@@ -64,7 +64,7 @@ namespace DiloxGE
 
 		//RotateCamera();
 
-		m_Camera.SetPosition(m_CameraPosition);
+		m_Camera.SetPosition(m_CameraPosition, m_ForwardDirection);
 
 		m_CameraTranslationSpeed = m_ZoomLevel; //Esto permite que si hay mucho zoom, la camara se mueva mas lento, si estas lejos se mueve mas rapido
 	}
