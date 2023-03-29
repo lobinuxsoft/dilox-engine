@@ -115,7 +115,7 @@ namespace DiloxGE
 		delete[] s_Data.QuadVertexBufferBase;
 	}
 
-	void Renderer2D::BeginScene(const OrthographicCamera& camera)
+	void Renderer2D::BeginScene(const PerspectiveCamera& camera)
 	{
 		DGE_PROFILE_FUNCTION();
 

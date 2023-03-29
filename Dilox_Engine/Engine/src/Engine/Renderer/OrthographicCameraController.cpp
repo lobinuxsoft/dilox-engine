@@ -11,8 +11,7 @@ using namespace std;
 
 namespace DiloxGE
 {
-	OrthographicCameraController::OrthographicCameraController() :
-		m_Camera()
+	PerspectiveCameraController::PerspectiveCameraController()
 	{
 		m_ForwardDirection = glm::vec3(0, 0, -1);
 		m_CameraPosition = glm::vec3(0, 0, 6);
@@ -22,9 +21,11 @@ namespace DiloxGE
 		firstPersonCamera = true;
 	}
 
-	void OrthographicCameraController::OnUpdate(Timestep ts)
+	void PerspectiveCameraController::OnUpdate(Timestep ts)
 	{
 		DGE_PROFILE_FUNCTION();
+
+		m_Camera.m_ForwardDirection = m_ForwardDirection;
 
 		if (firstPersonCamera)
 		{
@@ -63,9 +64,9 @@ namespace DiloxGE
 				m_CameraPosition += cameraUp * m_CameraTranslationSpeed;
 			}
 
-			FollowCursor();
+			RotateCamera();
 
-			m_Camera.SetPosition(m_CameraPosition, m_ForwardDirection);
+			m_Camera.SetPosition(m_CameraPosition);
 		}
 		else
 		{
@@ -73,16 +74,16 @@ namespace DiloxGE
 		}
 	}
 
-	void OrthographicCameraController::OnEvent(Event& e)
+	void PerspectiveCameraController::OnEvent(Event& e)
 	{
 		DGE_PROFILE_FUNCTION();
 
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<MouseScrolledEvent>(DGE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
-		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResize));
+		dispatcher.Dispatch<MouseScrolledEvent>(DGE_BIND_EVENT_FN(PerspectiveCameraController::OnMouseScrolled));
+		dispatcher.Dispatch<WindowResizeEvent>(DGE_BIND_EVENT_FN(PerspectiveCameraController::OnWindowResize));
 	}
 
-	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
+	bool PerspectiveCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		DGE_PROFILE_FUNCTION();
 
@@ -93,7 +94,7 @@ namespace DiloxGE
 		return false;
 	}
 
-	bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& e)
+	bool PerspectiveCameraController::OnWindowResize(WindowResizeEvent& e)
 	{
 		DGE_PROFILE_FUNCTION();
 
@@ -101,7 +102,7 @@ namespace DiloxGE
 		return false;
 	}
 
-	void OrthographicCameraController::FollowCursor()
+	void PerspectiveCameraController::RotateCamera()
 	{
 		float xoffset = 0, yoffset = 0;
 
@@ -128,20 +129,11 @@ namespace DiloxGE
 		m_Yaw += xoffset;
 		m_Pitch += yoffset;
 
-		// make sure that when pitch is out of bounds, screen doesn't get flipped
-		//if (constrainPitch)
-		/*{
-			if (m_Pitch > 89.0f)
-				m_Pitch = 89.0f;
-			if (m_Pitch < -89.0f)
-				m_Pitch = -89.0f;
-		}*/
-
 		// update Front, Right and Up Vectors using the updated Euler angles
 		UpdateCameraVectors();
 	}
 
-	void OrthographicCameraController::UpdateCameraVectors()
+	void PerspectiveCameraController::UpdateCameraVectors()
 	{
 		// calculate the new Front vector
 		glm::vec3 front;

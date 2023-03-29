@@ -4,17 +4,16 @@
 
 namespace DiloxGE
 {
-	class DGE_API OrthographicCamera
+	class DGE_API PerspectiveCamera
 	{
 	public:
-		OrthographicCamera();
+		PerspectiveCamera();
 
 		void SetProjection();
 
 		const glm::vec3& GetPosition() const { return m_Position; }
-		void SetPosition(const glm::vec3& position, glm::vec3 forwardDirection) {
+		void SetPosition(const glm::vec3& position) {
 			m_Position = position; 
-			m_ForwardDirection = forwardDirection;
 			RecalculateViewMatrix(); 
 		}
 

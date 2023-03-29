@@ -40,7 +40,7 @@ public:
 	void OnEvent(DiloxGE::Event& e) override;
 
 private:
-	DiloxGE::OrthographicCameraController m_CameraController;
+	DiloxGE::PerspectiveCameraController m_CameraController;
 
 	Entity player1;
 	Entity player2;

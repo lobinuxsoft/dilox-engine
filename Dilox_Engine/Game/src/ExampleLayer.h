@@ -24,6 +24,6 @@ private:
 
 	DiloxGE::Ref<DiloxGE::Texture2D> m_Texture, m_ChernoLogoTexture;
 
-	DiloxGE::OrthographicCameraController m_CameraController;
+	DiloxGE::PerspectiveCameraController m_CameraController;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };

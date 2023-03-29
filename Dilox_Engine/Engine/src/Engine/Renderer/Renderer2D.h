@@ -11,7 +11,7 @@ namespace DiloxGE
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera& camera);
+		static void BeginScene(const PerspectiveCamera& camera);
 		static void EndScene();
 
 		static void Flush();

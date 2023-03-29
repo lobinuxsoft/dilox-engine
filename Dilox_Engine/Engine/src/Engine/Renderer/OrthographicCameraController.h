@@ -8,16 +8,16 @@
 
 namespace DiloxGE
 {
-	class DGE_API OrthographicCameraController
+	class DGE_API PerspectiveCameraController
 	{
 	public:
-		OrthographicCameraController();
+		PerspectiveCameraController();
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 
-		OrthographicCamera& GetCamera() { return m_Camera; }
-		const OrthographicCamera& GetCamera() const { return m_Camera; }
+		PerspectiveCamera& GetCamera() { return m_Camera; }
+		const PerspectiveCamera& GetCamera() const { return m_Camera; }
 
 		float GetZoomLevel() const { return m_ZoomLevel; }
 		void SetZoomLevel(float level) { m_ZoomLevel = level; }
@@ -25,7 +25,7 @@ namespace DiloxGE
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
-		void FollowCursor();
+		void RotateCamera();
 		void UpdateCameraVectors();
 
 		glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -41,7 +41,7 @@ namespace DiloxGE
 		glm::vec2 m_LastMousePosition{ 0.0f, 0.0f };
 		glm::vec2 mousePos{ 0.0f, 0.0f };
 
-		OrthographicCamera m_Camera;
+		PerspectiveCamera m_Camera;
 
 		bool firstPersonCamera;
 		bool m_Rotation;
