@@ -41,11 +41,10 @@ namespace DiloxGE
 		{
 			firstPersonCamera = !firstPersonCamera;
 		}
-		
-		m_Camera.m_ForwardDirection = m_ForwardDirection;
 
 		if (firstPersonCamera)
 		{
+			m_Camera.m_ForwardDirection = m_ForwardDirection;
 			glm::vec2 mousePos = { Input::GetMousePosition().first, Input::GetMousePosition().second };
 			glm::vec2 delta = (mousePos - m_LastMousePosition) * 0.002f;
 			m_LastMousePosition = mousePos;

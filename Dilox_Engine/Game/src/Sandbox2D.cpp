@@ -25,7 +25,7 @@ static const char* s_MapTiles =
 "WWWWWWWWWWWWWWWWWWWWWWWW"
 ;
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController() { }
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(player1.position) { }
 
 void Sandbox2D::OnAttach()
 {
@@ -120,52 +120,6 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	DiloxGE::Renderer2D::EndScene();
 }
 
-bool Sandbox2D::CheckCollision(Entity& player1, Entity& player2)
-{
-	if (player1.position.x < player2.position.x + player2.scale.x &&
-		player1.position.x + player1.scale.x > player2.position.x&&
-		player1.position.y < player2.position.y + player2.scale.y &&
-		player1.position.y + player1.scale.y > player2.position.y)
-	{
-		glm::vec2 dir = player2.position - player1.position;
-		dir = glm::normalize(dir);
-		float dist = glm::distance(player1.position, player2.position);
-
-		player1.position -= dir * (dist * 0.025f * playerSpeed);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool Sandbox2D::CheckCollision(Entity& player1, Tile& tile)
-{
-	if (player1.position.x < tile.position.x + tile.scale.x &&
-		player1.position.x + player1.scale.x > tile.position.x&&
-		player1.position.y < tile.position.y + tile.scale.y &&
-		player1.position.y + player1.scale.y > tile.position.y)
-	{
-		if (tile.tileType == 'W')
-		{
-			//Si el tile es Water (W), te mueve hacia atras, dando a entender que estas "colisionando"
-			glm::vec2 dir = tile.position - player1.position;
-			dir = glm::normalize(dir);
-			float dist = glm::distance(player1.position, tile.position);
-
-			player1.position -= dir * (dist * 0.025f * playerSpeed);
-
-			std::cout << "colisiono";
-			return true;
-		}
-	}
-	else
-	{
-		return false;
-	}
-}
-
 void Sandbox2D::CreateAnimations()
 {
 	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 15 }, { 16, 16 }, { 1, 1 }));
@@ -189,17 +143,17 @@ void Sandbox2D::CreateAnimations()
 
 void Sandbox2D::SetTransforms()
 {
-	player3.position = { -2.0f,0.0f };
+	player3.position = { -2.0f,0.0f,0.0f };
 	player3.scale = { 1.0f,1.0f };
 	player3.color = { 1.0f,1.0f,1.0f,1.0f };
 	player3.rotation = 0;
 
-	player1.position = { 0.0f,0.0f };
+	player1.position = { 0.0f,0.0f,0.0f };
 	player1.scale = { 1.0f,1.0f };
 	player1.color = { 1.0f,1.0f,1.0f,1.0f };
 	player1.rotation = 0;
 
-	player2.position = { 1.0f,1.0f };
+	player2.position = { 1.0f,1.0f,0.0f };
 	player2.scale = { 1.0f,1.0f };
 	player2.color = { 1.0f,1.0f,1.0f,1.0f };
 	player2.rotation = 0;

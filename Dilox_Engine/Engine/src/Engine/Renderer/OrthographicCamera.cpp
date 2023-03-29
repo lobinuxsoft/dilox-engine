@@ -31,7 +31,7 @@ namespace DiloxGE
 	void PerspectiveCamera::RecalculateViewMatrix(glm::vec3 m_TargetPosition)
 	{
 		DGE_PROFILE_FUNCTION();
-		float m_Distance = 5.0f;
+		float m_Distance = 50.0f;
 
 		// Set the camera position behind the object
 		glm::vec3 cameraPosition = m_TargetPosition - m_Distance * m_ForwardDirection;

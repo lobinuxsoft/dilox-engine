@@ -6,7 +6,7 @@ struct Entity
 {
 	glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
 	float rotation = 0;
-	glm::vec2 position = { 0.0f,0.0f };
+	glm::vec3 position = { 0.0f,0.0f, 0.0f };
 	glm::vec2 scale = { 1.0f,1.0f };
 	std::vector<DiloxGE::Ref<DiloxGE::Animation>> animations;
 
@@ -68,9 +68,6 @@ private:
 	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animRoy;
 
 	DiloxGE::Ref<DiloxGE::SubTexture2D> tileTexture;
-
-	bool CheckCollision(Entity& player1, Entity& player2);
-	bool CheckCollision(Entity& player1, Tile& tile);
 
 	void CreateAnimations();
 	void SetTransforms();
