@@ -25,13 +25,15 @@ static const char* s_MapTiles =
 "WWWWWWWWWWWWWWWWWWWWWWWW"
 ;
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(player1.position) { }
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController() { }
 
 void Sandbox2D::OnAttach()
 {
 	DGE_PROFILE_FUNCTION();
 
 	//m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/character.png");
+
+	m_CameraController.SetPlayerTarget(player1.position);
 
 	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/Link.png");
 
@@ -66,7 +68,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	CheckInput(ts);
 
 	// Update
-	m_CameraController.OnUpdate(ts);
+	m_CameraController.OnUpdate(ts, player1.position);
 
 	// Render
 	DiloxGE::Renderer2D::ResetStats();
@@ -101,19 +103,6 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 			auxTile[y][x].position = { m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f };
 
 			DiloxGE::Renderer2D::DrawQuad(auxTile[y][x].position, { 1,1 }, tileTexture, 1.0f, player3.color);
-		}
-	}
-
-	for (int y = 0; y < m_MapHeight; y++)
-	{
-		for (int x = 0; x < m_MapWidth; x++)
-		{
-			//Chequea si el tile esta dentro de un rango del jugador, para hacer el chequeo de colisiones
-			if (glm::abs(auxTile[y][x].position.x - player1.position.x) < 2.0f
-				&& glm::abs(auxTile[y][x].position.y - player1.position.y) < 2.0f)
-			{
-				CheckCollision(player1, auxTile[y][x]);
-			}
 		}
 	}
 

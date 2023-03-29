@@ -14,7 +14,7 @@ namespace DiloxGE
 		PerspectiveCameraController();
 		PerspectiveCameraController(glm::vec3 targetPosition);
 
-		void OnUpdate(Timestep ts);
+		void OnUpdate(Timestep ts, glm::vec3 targetPosition);
 		void OnEvent(Event& e);
 
 		PerspectiveCamera& GetCamera() { return m_Camera; }
@@ -22,6 +22,8 @@ namespace DiloxGE
 
 		float GetZoomLevel() const { return m_ZoomLevel; }
 		void SetZoomLevel(float level) { m_ZoomLevel = level; }
+
+		void SetPlayerTarget(glm::vec3 targetPlayer);
 
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
