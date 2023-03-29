@@ -21,10 +21,27 @@ namespace DiloxGE
 		firstPersonCamera = true;
 	}
 
+	PerspectiveCameraController::PerspectiveCameraController(glm::vec3 targetPosition)
+	{
+		m_ForwardDirection = glm::vec3(0, 0, -1);
+		m_CameraPosition = glm::vec3(0, 0, 6);
+		m_Yaw = -90.0f;
+		m_CameraTranslationSpeed = 2.0f;
+		m_CameraRotationSpeed = 2.0f;
+		firstPersonCamera = true;
+
+		this->targetPosition = targetPosition;
+	}
+
 	void PerspectiveCameraController::OnUpdate(Timestep ts)
 	{
 		DGE_PROFILE_FUNCTION();
 
+		if (Input::IsKeyPressed(DGE_KEY_M))
+		{
+			firstPersonCamera = !firstPersonCamera;
+		}
+		
 		m_Camera.m_ForwardDirection = m_ForwardDirection;
 
 		if (firstPersonCamera)
@@ -70,7 +87,7 @@ namespace DiloxGE
 		}
 		else
 		{
-			
+			m_Camera.SetPosition(targetPosition, true);
 		}
 	}
 

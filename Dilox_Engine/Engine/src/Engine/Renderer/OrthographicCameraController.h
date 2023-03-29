@@ -12,6 +12,7 @@ namespace DiloxGE
 	{
 	public:
 		PerspectiveCameraController();
+		PerspectiveCameraController(glm::vec3 targetPosition);
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
@@ -27,7 +28,7 @@ namespace DiloxGE
 		bool OnWindowResize(WindowResizeEvent& e);
 		void RotateCamera();
 		void UpdateCameraVectors();
-
+		glm::vec3 targetPosition;
 		glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 		glm::vec3 direction;
 		glm::vec3 rightDirection;
