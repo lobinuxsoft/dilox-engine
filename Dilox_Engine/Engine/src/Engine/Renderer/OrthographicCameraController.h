@@ -11,7 +11,7 @@ namespace DiloxGE
 	class DGE_API OrthographicCameraController
 	{
 	public:
-		OrthographicCameraController(float aspectRatio, bool rotation = false); //aspect ratio *  2 units
+		OrthographicCameraController();
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
@@ -34,7 +34,6 @@ namespace DiloxGE
 
 		float m_Pitch = 0;
 		float m_Yaw = 0;
-		float lastX, lastY;
 
 		float m_AspectRatio;
 		float m_ZoomLevel = 1.0f; //Es el valor con el que vamos a inicializar la camara ortografica 
@@ -44,12 +43,12 @@ namespace DiloxGE
 
 		OrthographicCamera m_Camera;
 
-		bool firstMouse;
+		bool firstPersonCamera;
 		bool m_Rotation;
 
 		glm::vec3 m_CameraPosition = { 0.0f,0.0f ,0.0f };
 		glm::vec3 m_ForwardDirection{ 0.0f, 0.0f, 0.0f };
 		float m_CameraTranslationSpeed = 5.0f;
-		float m_CameraRotationSpeed = 180.0f;
+		float m_CameraRotationSpeed = 0.3f;
 	};
 }

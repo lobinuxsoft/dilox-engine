@@ -4,7 +4,7 @@
 
 namespace DiloxGE
 {
-	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
+	OrthographicCamera::OrthographicCamera()
 		: m_ProjectionMatrix(glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f)), m_ViewMatrix(1.0f)
 	{
 		DGE_PROFILE_FUNCTION();
@@ -12,7 +12,7 @@ namespace DiloxGE
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 
-	void OrthographicCamera::SetProjection(float left, float right, float bottom, float top)
+	void OrthographicCamera::SetProjection()
 	{
 		DGE_PROFILE_FUNCTION();
 

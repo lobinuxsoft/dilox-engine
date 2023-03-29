@@ -11,62 +11,66 @@ using namespace std;
 
 namespace DiloxGE
 {
-	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation) :
-		m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+	OrthographicCameraController::OrthographicCameraController() :
+		m_Camera()
 	{
 		m_ForwardDirection = glm::vec3(0, 0, -1);
 		m_CameraPosition = glm::vec3(0, 0, 6);
 		m_Yaw = -90.0f;
+		m_CameraTranslationSpeed = 2.0f;
+		m_CameraRotationSpeed = 2.0f;
+		firstPersonCamera = true;
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
 		DGE_PROFILE_FUNCTION();
 
-		glm::vec2 mousePos = { Input::GetMousePosition().first, Input::GetMousePosition().second };
-		glm::vec2 delta = (mousePos - m_LastMousePosition) * 0.002f;
-		m_LastMousePosition = mousePos;
-
-		//constexpr glm::vec3 upDirection(0.0f, 1.0f, 0.0f);
-
-		//IZQUIERDA
-		if (Input::IsKeyPressed(DGE_KEY_A))
+		if (firstPersonCamera)
 		{
-			m_CameraPosition -= glm::normalize(glm::cross(m_ForwardDirection, cameraUp)) * m_CameraTranslationSpeed;
-		}
-		//DERECHA
-		else if (Input::IsKeyPressed(DGE_KEY_D))
-		{
-			m_CameraPosition += glm::normalize(glm::cross(m_ForwardDirection, cameraUp)) * m_CameraTranslationSpeed;
-		}
-		//FORWARD
-		if (Input::IsKeyPressed(DGE_KEY_Q))
-		{
-			m_CameraPosition += m_CameraTranslationSpeed * m_ForwardDirection;
-		}
-		//BACKWARD
-		else if (Input::IsKeyPressed(DGE_KEY_E))
-		{
-			m_CameraPosition -= m_CameraTranslationSpeed * m_ForwardDirection;
-		}
-		//ABAJO
-		if (Input::IsKeyPressed(DGE_KEY_S))
-		{
-			m_CameraPosition -= cameraUp * m_CameraTranslationSpeed;
-		}
-		//ARRIBA
-		else if (Input::IsKeyPressed(DGE_KEY_W))
-		{
-			m_CameraPosition += cameraUp * m_CameraTranslationSpeed;
-		}
+			glm::vec2 mousePos = { Input::GetMousePosition().first, Input::GetMousePosition().second };
+			glm::vec2 delta = (mousePos - m_LastMousePosition) * 0.002f;
+			m_LastMousePosition = mousePos;
 
-		FollowCursor();
+			//IZQUIERDA
+			if (Input::IsKeyPressed(DGE_KEY_A))
+			{
+				m_CameraPosition -= glm::normalize(glm::cross(m_ForwardDirection, cameraUp)) * m_CameraTranslationSpeed;
+			}
+			//DERECHA
+			else if (Input::IsKeyPressed(DGE_KEY_D))
+			{
+				m_CameraPosition += glm::normalize(glm::cross(m_ForwardDirection, cameraUp)) * m_CameraTranslationSpeed;
+			}
+			//FORWARD
+			if (Input::IsKeyPressed(DGE_KEY_Q))
+			{
+				m_CameraPosition += m_CameraTranslationSpeed * m_ForwardDirection;
+			}
+			//BACKWARD
+			else if (Input::IsKeyPressed(DGE_KEY_E))
+			{
+				m_CameraPosition -= m_CameraTranslationSpeed * m_ForwardDirection;
+			}
+			//ABAJO
+			if (Input::IsKeyPressed(DGE_KEY_S))
+			{
+				m_CameraPosition -= cameraUp * m_CameraTranslationSpeed;
+			}
+			//ARRIBA
+			else if (Input::IsKeyPressed(DGE_KEY_W))
+			{
+				m_CameraPosition += cameraUp * m_CameraTranslationSpeed;
+			}
 
-		//RotateCamera();
+			FollowCursor();
 
-		m_Camera.SetPosition(m_CameraPosition, m_ForwardDirection);
-
-		m_CameraTranslationSpeed = m_ZoomLevel; //Esto permite que si hay mucho zoom, la camara se mueva mas lento, si estas lejos se mueve mas rapido
+			m_Camera.SetPosition(m_CameraPosition, m_ForwardDirection);
+		}
+		else
+		{
+			
+		}
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
@@ -84,7 +88,7 @@ namespace DiloxGE
 
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f); //Impide que la camara tenga zoom negativo
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Camera.SetProjection();
 
 		return false;
 	}
@@ -93,8 +97,7 @@ namespace DiloxGE
 	{
 		DGE_PROFILE_FUNCTION();
 
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Camera.SetProjection();
 		return false;
 	}
 
@@ -102,18 +105,21 @@ namespace DiloxGE
 	{
 		float xoffset = 0, yoffset = 0;
 
-		if (Input::IsKeyPressed(DGE_KEY_C))
+		if (Input::IsKeyPressed(DGE_KEY_RIGHT))
 		{
-			/*xoffset = Input::GetMouseX();
-			yoffset = Input::GetMouseY();*/
-
-			m_Yaw += 10.0f;
-			cout << m_Yaw << endl; 
+			m_Yaw += m_CameraRotationSpeed;
 		}
-		else if (Input::IsKeyPressed(DGE_KEY_V))
+		else if (Input::IsKeyPressed(DGE_KEY_LEFT))
 		{
-			m_Yaw -= 10.0f;
-			cout << m_Yaw << endl;
+			m_Yaw -= m_CameraRotationSpeed;
+		}
+		else if (Input::IsKeyPressed(DGE_KEY_UP))
+		{
+			m_Pitch += m_CameraRotationSpeed;
+		}
+		else if (Input::IsKeyPressed(DGE_KEY_DOWN))
+		{
+			m_Pitch -= m_CameraRotationSpeed;
 		}
 
 		xoffset *= 0.02f;
@@ -124,12 +130,12 @@ namespace DiloxGE
 
 		// make sure that when pitch is out of bounds, screen doesn't get flipped
 		//if (constrainPitch)
-		{
+		/*{
 			if (m_Pitch > 89.0f)
 				m_Pitch = 89.0f;
 			if (m_Pitch < -89.0f)
 				m_Pitch = -89.0f;
-		}
+		}*/
 
 		// update Front, Right and Up Vectors using the updated Euler angles
 		UpdateCameraVectors();
@@ -146,7 +152,5 @@ namespace DiloxGE
 		// also re-calculate the Right and Up vector
 		rightDirection = glm::normalize(glm::cross(m_ForwardDirection, cameraUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 		cameraUp = glm::normalize(glm::cross(rightDirection, m_ForwardDirection));
-
-		//cout << m_ForwardDirection.x << " " << m_ForwardDirection.y << " " << m_ForwardDirection.z << endl;
 	}
 }

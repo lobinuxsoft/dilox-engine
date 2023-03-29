@@ -7,9 +7,9 @@ namespace DiloxGE
 	class DGE_API OrthographicCamera
 	{
 	public:
-		OrthographicCamera(float left, float right, float bottom, float top);
+		OrthographicCamera();
 
-		void SetProjection(float left, float right, float bottom, float top);
+		void SetProjection();
 
 		const glm::vec3& GetPosition() const { return m_Position; }
 		void SetPosition(const glm::vec3& position, glm::vec3 forwardDirection) {
@@ -17,9 +17,6 @@ namespace DiloxGE
 			m_ForwardDirection = forwardDirection;
 			RecalculateViewMatrix(); 
 		}
-
-		//glm::vec3 GetRotation() const { return m_Rotation; }
-		//void SetRotation(glm::vec3 rotation) { m_Rotation = rotation; RecalculateViewMatrix(); }
 
 		const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }

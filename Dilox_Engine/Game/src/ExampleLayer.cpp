@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 ExampleLayer::ExampleLayer()
-	: Layer("ExampleLayer"), m_CameraController(1280.0f / 720.0f)
+	: Layer("ExampleLayer"), m_CameraController()
 {
 	m_VertexArray = DiloxGE::VertexArray::Create();
 
