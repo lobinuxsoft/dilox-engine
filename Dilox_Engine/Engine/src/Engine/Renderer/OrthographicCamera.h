@@ -20,7 +20,6 @@ namespace DiloxGE
 
 		void SetPosition(const glm::vec3& m_TargetPosition, bool thirdPerson) 
 		{
-			//m_Position = m_TargetPosition;
 			RecalculateViewMatrix(m_TargetPosition);
 		}
 

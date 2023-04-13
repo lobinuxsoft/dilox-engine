@@ -81,7 +81,9 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	DGE_PROFILE_SCOPE("Renderer Draw");
 	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
+	DiloxGE::Renderer2D::DrawCube(player1.position, glm::vec3{ 1.0f,1.0f, 1.0f }, 1.0f, player1.color);
+
+	//DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
 
 	for (int y = 0; y < m_MapHeight; y++)
 	{
@@ -102,7 +104,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 			//Esto deberia ir en una funcion de CreateTileMap
 			auxTile[y][x].position = { m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f };
 
-			DiloxGE::Renderer2D::DrawQuad(auxTile[y][x].position, { 1,1 }, tileTexture, 1.0f, player3.color);
+			//DiloxGE::Renderer2D::DrawQuad(auxTile[y][x].position, { 1,1 }, tileTexture, 1.0f, player3.color);
 		}
 	}
 

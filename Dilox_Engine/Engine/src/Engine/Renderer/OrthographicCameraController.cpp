@@ -16,7 +16,7 @@ namespace DiloxGE
 		m_ForwardDirection = glm::vec3(0, 0, -1);
 		m_CameraPosition = glm::vec3(0, 0, 6);
 		m_Yaw = -90.0f;
-		m_CameraTranslationSpeed = 2.0f;
+		m_CameraTranslationSpeed = 0.3f;
 		m_CameraRotationSpeed = 2.0f;
 		firstPersonCamera = true;
 	}
@@ -81,7 +81,7 @@ namespace DiloxGE
 
 	void PerspectiveCameraController::SetPlayerTarget(glm::vec3 targetPlayer)
 	{
-		targetPosition = targetPlayer;
+		//targetPosition = targetPlayer;
 	}
 
 	void PerspectiveCameraController::OnEvent(Event& e)

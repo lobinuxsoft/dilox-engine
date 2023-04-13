@@ -6,6 +6,7 @@
 #include "Engine/Renderer/RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <gl/GL.h>
 
 namespace DiloxGE
 {
@@ -23,7 +24,7 @@ namespace DiloxGE
 		static const uint32_t MaxQuads = 20000;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
-		static const uint32_t MaxTextureSlots = 32; // TODO: RenderCaps
+		static const uint32_t MaxTextureSlots = 32;
 
 		Ref<VertexArray> QuadVertexArray;
 		Ref<VertexBuffer> QuadVertexBuffer;
@@ -37,7 +38,7 @@ namespace DiloxGE
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
 
-		glm::vec4 QuadVertexPositions[4];
+		glm::vec4 QuadVertexPositions[24];
 
 		Renderer2D::Statistics Stats;
 	};
@@ -147,6 +148,7 @@ namespace DiloxGE
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 			s_Data.TextureSlots[i]->Bind(i);
 
+		//ACA DIBUJA!
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.DrawCalls++;
 	}
@@ -444,6 +446,54 @@ namespace DiloxGE
 		}
 
 		s_Data.QuadIndexCount += 6;
+
+		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawCube(const glm::vec3& position, const glm::vec3& size, float tilingFactor, const glm::vec4& tintColor)
+	{
+		DGE_PROFILE_FUNCTION();
+
+		const float textureIndex = 0.0f; // White Texture
+
+		constexpr size_t cubeVertexCount = 24;
+
+		constexpr glm::vec3 vertexPositions[] = {
+			// Front face
+			{ -0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, 0.5f, 0.5f }, { -0.5f, 0.5f, 0.5f },
+			// Back face
+			{ -0.5f, -0.5f, -0.5f }, { -0.5f, 0.5f, -0.5f }, { 0.5f, 0.5f, -0.5f }, { 0.5f, -0.5f, -0.5f },
+			// Left face
+			{ -0.5f, 0.5f, 0.5f }, { -0.5f, -0.5f, 0.5f }, { -0.5f, -0.5f, -0.5f }, { -0.5f, 0.5f, -0.5f },
+			// Right face
+			{ 0.5f, 0.5f, -0.5f }, { 0.5f, -0.5f, -0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, 0.5f, 0.5f },
+			// Top face
+			{ -0.5f, 0.5f, -0.5f }, { 0.5f, 0.5f, -0.5f }, { 0.5f, 0.5f, 0.5f }, { -0.5f, 0.5f, 0.5f },
+			// Bottom face
+			{ -0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, -0.5f }, { -0.5f, -0.5f, -0.5f },
+		};
+		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, size.z });
+
+		for (size_t i = 0; i < cubeVertexCount; i++)
+		{
+			s_Data.QuadVertexBufferPtr->Position = vertexPositions[i];
+
+			//s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
+
+			s_Data.QuadVertexBufferPtr->Color = tintColor;
+			//s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr++;
+		}
+
+		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
+
+		s_Data.QuadIndexCount += 24;
 
 		s_Data.Stats.QuadCount++;
 	}
