@@ -96,9 +96,24 @@ namespace DiloxGE
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
 			samplers[i] = i;
 
-		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+
+		glm::vec3 lightPos = { 1.0f,1.0f,1.0f };
+
+		//ACA SE CREA EL SHADER
+		s_Data.TextureShader = Shader::Create("assets/shaders/Lights.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+		s_Data.TextureShader->SetFloat3("u_LightPosition", lightPos);
+		s_Data.TextureShader->SetFloat3("u_LightColor", lightPos);
+		s_Data.TextureShader->SetFloat("u_LightIntensity", 1.0f);
+
+
+		/*s_Data.TextureShader = Shader::Create("assets/shaders/Lights.glsl");
+		s_Data.TextureShader->Bind();
+		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+		s_Data.TextureShader->SetFloat3("u_LightPosition", lightPos);
+		s_Data.TextureShader->SetFloat3("u_LightColor", lightPos);
+		s_Data.TextureShader->SetFloat("u_LightIntensity", 1.0f);*/
 
 		// Set all texture slots to 0
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -472,6 +487,7 @@ namespace DiloxGE
 			// Bottom face
 			{ -0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, -0.5f }, { -0.5f, -0.5f, -0.5f },
 		};
+
 		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
