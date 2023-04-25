@@ -65,6 +65,13 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 {
 	DGE_PROFILE_FUNCTION();
 
+	glm::vec3 size = { 1.0f,1.0f, 1.0f };
+
+
+	glm::mat4 transform = glm::translate(glm::mat4(1.0f), player1.position)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(player1.rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), size);
+
 	CheckInput(ts);
 
 	// Update
@@ -79,9 +86,9 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 	}
 
 	DGE_PROFILE_SCOPE("Renderer Draw");
-	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	DiloxGE::Renderer2D::BeginScene(m_CameraController.GetCamera(), transform);
 
-	DiloxGE::Renderer2D::DrawCube(player1.position, glm::vec3{ 1.0f,1.0f, 1.0f }, 1.0f, player1.color);
+	DiloxGE::Renderer2D::DrawCube(player1.position, size, 1.0f, player1.color);
 
 	//DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
 

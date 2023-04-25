@@ -15,6 +15,7 @@ namespace DiloxGE
 		glm::vec3 Position;
 		glm::vec4 Color;
 		glm::vec2 TexCoord;
+		glm::vec3 Normal;
 		float TexIndex;
 		float TilingFactor;
 	};
@@ -38,7 +39,7 @@ namespace DiloxGE
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
 
-		glm::vec4 QuadVertexPositions[24];
+		glm::vec4 QuadVertexPositions[36];
 
 		Renderer2D::Statistics Stats;
 	};
@@ -57,6 +58,7 @@ namespace DiloxGE
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color" },
 			{ ShaderDataType::Float2, "a_TexCoord" },
+			{ ShaderDataType::Float3, "a_Normal" },
 			{ ShaderDataType::Float, "a_TexIndex" },
 			{ ShaderDataType::Float, "a_TilingFactor" }
 			});
@@ -99,12 +101,14 @@ namespace DiloxGE
 
 		glm::vec3 lightPos = { 1.0f,1.0f,1.0f };
 
+		glm::vec4 lightColor = { 1.0f,1.0f,1.0f,0.1f };
+
 		//ACA SE CREA EL SHADER
 		s_Data.TextureShader = Shader::Create("assets/shaders/Lights.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 		s_Data.TextureShader->SetFloat3("u_LightPosition", lightPos);
-		s_Data.TextureShader->SetFloat3("u_LightColor", lightPos);
+		s_Data.TextureShader->SetFloat4("u_LightColor", lightColor);
 		s_Data.TextureShader->SetFloat("u_LightIntensity", 1.0f);
 
 
@@ -131,12 +135,15 @@ namespace DiloxGE
 		delete[] s_Data.QuadVertexBufferBase;
 	}
 
-	void Renderer2D::BeginScene(const PerspectiveCamera& camera)
+	void Renderer2D::BeginScene(const PerspectiveCamera& camera, glm::mat4 model)
 	{
 		DGE_PROFILE_FUNCTION();
 
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_Data.TextureShader->SetMat4("u_Model", model);
+
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
@@ -471,21 +478,73 @@ namespace DiloxGE
 
 		const float textureIndex = 0.0f; // White Texture
 
-		constexpr size_t cubeVertexCount = 24;
+		constexpr size_t cubeVertexCount = 36;
 
-		constexpr glm::vec3 vertexPositions[] = {
-			// Front face
-			{ -0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, 0.5f, 0.5f }, { -0.5f, 0.5f, 0.5f },
-			// Back face
-			{ -0.5f, -0.5f, -0.5f }, { -0.5f, 0.5f, -0.5f }, { 0.5f, 0.5f, -0.5f }, { 0.5f, -0.5f, -0.5f },
-			// Left face
-			{ -0.5f, 0.5f, 0.5f }, { -0.5f, -0.5f, 0.5f }, { -0.5f, -0.5f, -0.5f }, { -0.5f, 0.5f, -0.5f },
-			// Right face
-			{ 0.5f, 0.5f, -0.5f }, { 0.5f, -0.5f, -0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, 0.5f, 0.5f },
-			// Top face
-			{ -0.5f, 0.5f, -0.5f }, { 0.5f, 0.5f, -0.5f }, { 0.5f, 0.5f, 0.5f }, { -0.5f, 0.5f, 0.5f },
-			// Bottom face
-			{ -0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, 0.5f }, { 0.5f, -0.5f, -0.5f }, { -0.5f, -0.5f, -0.5f },
+		glm::vec3 vertexNormals[] = {
+		{ 0.0f,  0.0f,  1.0f },
+		{ 0.0f,  0.0f,  1.0f },
+		{ 0.0f,  0.0f,  1.0f },
+		{ 0.0f,  0.0f,  1.0f },
+		{ 0.0f,  0.0f, -1.0f },
+		{ 0.0f,  0.0f, -1.0f },
+		{ 0.0f,  0.0f, -1.0f },
+		{ 0.0f,  0.0f, -1.0f },
+		{ 0.0f,  1.0f,  0.0f },
+		{ 0.0f,  1.0f,  0.0f },
+		{ 0.0f,  1.0f,  0.0f },
+		{ 0.0f,  1.0f,  0.0f },
+		{ 0.0f, -1.0f,  0.0f },
+		{ 0.0f, -1.0f,  0.0f },
+		{ 0.0f, -1.0f,  0.0f },
+		{ 0.0f, -1.0f,  0.0f },
+		{ 1.0f,  0.0f,  0.0f },
+		{ 1.0f,  0.0f,  0.0f },
+		{ 1.0f,  0.0f,  0.0f },
+		{ 1.0f,  0.0f,  0.0f },
+		{ -1.0f,  0.0f,  0.0f },
+		{ -1.0f,  0.0f,  0.0f },
+		{ -1.0f,  0.0f,  0.0f },
+		{ -1.0f,  0.0f,  0.0f }
+		};
+
+		constexpr glm::vec3 vertexPositions[] =
+
+			// Cara frontal
+		{
+		{-0.5f, -0.5f, 0.5f},
+		{0.5f, -0.5f, 0.5f},
+		{0.5f, 0.5f, 0.5f},
+		{-0.5f, 0.5f, 0.5f},
+
+		// Cara trasera
+		{0.5f, -0.5f, -0.5f},
+		{-0.5f, -0.5f, -0.5f},
+		{-0.5f, 0.5f, -0.5f},
+		{0.5f, 0.5f, -0.5f},
+
+		// Cara superior
+		{-0.5f, 0.5f, 0.5f},
+		{0.5f, 0.5f, 0.5f},
+		{0.5f, 0.5f, -0.5f},
+		{-0.5f, 0.5f, -0.5f},
+
+		// Cara inferior
+		{ 0.5f, -0.5f, 0.5f},
+		{ -0.5f, -0.5f, 0.5f},
+		{ -0.5f, -0.5f, -0.5f},
+		{ 0.5f, -0.5f, -0.5f},
+
+		// Cara derecha
+		{0.5f, -0.5f, 0.5f},
+		{0.5f, -0.5f, -0.5f},
+		{0.5f, 0.5f, -0.5f},
+		{0.5f, 0.5f, 0.5f},
+
+		// Cara izquierda
+		{-0.5f, -0.5f, -0.5f},
+		{-0.5f, -0.5f, 0.5f},
+		{-0.5f, 0.5f, 0.5f},
+		{-0.5f, 0.5f, -0.5f},
 		};
 
 		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -495,12 +554,13 @@ namespace DiloxGE
 
 		for (size_t i = 0; i < cubeVertexCount; i++)
 		{
-			s_Data.QuadVertexBufferPtr->Position = vertexPositions[i];
 
 			//s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
 
+			s_Data.QuadVertexBufferPtr->Position = vertexPositions[i];
 			s_Data.QuadVertexBufferPtr->Color = tintColor;
-			//s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->Normal = vertexNormals[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
 			s_Data.QuadVertexBufferPtr++;
@@ -509,7 +569,7 @@ namespace DiloxGE
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			FlushAndReset();
 
-		s_Data.QuadIndexCount += 24;
+		s_Data.QuadIndexCount += cubeVertexCount;
 
 		s_Data.Stats.QuadCount++;
 	}

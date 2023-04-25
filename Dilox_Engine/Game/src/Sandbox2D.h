@@ -8,6 +8,7 @@ struct Entity
 	float rotation = 0;
 	glm::vec3 position = { 0.0f,0.0f, 0.0f };
 	glm::vec2 scale = { 1.0f,1.0f };
+
 	std::vector<DiloxGE::Ref<DiloxGE::Animation>> animations;
 
 	DiloxGE::Ref<DiloxGE::SubTexture2D> Animate(int index, float delta)

@@ -5,15 +5,17 @@
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec4 a_Color;
 layout(location = 2) in vec2 a_TexCoord;
-layout(location = 3) in float a_TexIndex;
-layout(location = 4) in float a_TilingFactor;
+layout(location = 3) in vec3 a_Normal;
+layout(location = 4) in float a_TexIndex;
+layout(location = 5) in float a_TilingFactor;
 
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_Model;
 
 out vec4 v_Color;
-out vec4 FragPos;
+out vec3 FragPos;
+out vec3 v_Normal;
 
 out vec2 v_TexCoord;
 out flat float v_TexIndex;
@@ -21,10 +23,11 @@ out float v_TilingFactor;
 
 void main()
 {
-	FragPos = model * vec4(a_Position, 1.0); 
+	FragPos = vec3(u_Model * vec4(a_Position, 1.0f)); 
 
 	v_Color = a_Color;
 	v_TexCoord = a_TexCoord;
+	v_Normal = a_Normal;
 	v_TexIndex = a_TexIndex;
 	v_TilingFactor = a_TilingFactor;
 	gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
@@ -37,15 +40,16 @@ layout(location = 0) out vec4 color;
 
 in vec4 v_Color;
 in vec2 v_TexCoord;
+in vec3 v_Normal;
 in flat float v_TexIndex;
 in float v_TilingFactor;
 
-in vec4 FragPos;
+in vec3 FragPos;
 
 uniform sampler2D u_Textures[32];
 
 uniform vec3 u_LightPosition; // Position of the light in world coordinates
-uniform vec3 u_LightColor; // Color of the light
+uniform vec4 u_LightColor; // Color of the light
 uniform float u_LightIntensity; // Intensity of the light
 
 void main()
@@ -88,20 +92,19 @@ void main()
 		case 31: texColor *= texture(u_Textures[31], v_TexCoord * v_TilingFactor); break;
 
 	}
-
-	//vec3 lightDirection = normalize(u_LightPosition - vec3(gl_FragCoord.xy, 0.0));
-	//float lightDistance = length(u_LightPosition - vec3(gl_FragCoord.xy, 0.0));
-	//
-	//float diffuse = max(dot(normalize(v_TexCoord), lightDirection), 0.0);
-	//
-	//float shadow = 1.0;
-	//if (texture(u_Textures[0], v_TexCoord * v_TilingFactor).r < (lightDistance / 1000.0)) {
-	//	shadow = 0.5; // If fragment is in shadow, reduce its intensity
-	//}
-	//texColor.rgb *= u_LightColor * u_LightIntensity * diffuse * shadow;
-
 	texColor.rgb *= vec3(gl_FragCoord.xy, 0.0);
 
+	float ambientStrength = 1.0f;
+	vec4 ambient = ambientStrength * u_LightColor;            
 
-	color = FragPos;
+	  vec3 norm = normalize(v_Normal);                       
+      vec3 lightDir = normalize( u_LightPosition - FragPos);         
+      float diff = max(dot(norm, lightDir), 0.0);            
+      vec4 diffuseLight = diff *  u_LightColor;                 
+
+
+	vec4 result = (ambient + diffuseLight) * texColor;
+
+
+	color = result;
 }
