@@ -33,6 +33,9 @@ namespace DiloxGE
 
 		static void DrawCube(const glm::vec3& position, const glm::vec3& size, float tilingFactor, const glm::vec4& tintColor);
 
+		static void GetCameraTransform(glm::vec3 cameraPosition);
+
+
 		// Stats
 		struct Statistics
 		{

@@ -143,6 +143,7 @@ namespace DiloxGE
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		s_Data.TextureShader->SetMat4("u_Model", model);
+		GetCameraTransform(camera.GetPosition());
 
 
 		s_Data.QuadIndexCount = 0;
@@ -572,6 +573,11 @@ namespace DiloxGE
 		s_Data.QuadIndexCount += cubeVertexCount;
 
 		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::GetCameraTransform(glm::vec3 cameraTransform)
+	{
+		s_Data.TextureShader->SetFloat3("u_ViewPosition", cameraTransform);
 	}
 
 	void Renderer2D::ResetStats()
