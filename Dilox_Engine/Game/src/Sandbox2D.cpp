@@ -25,7 +25,10 @@ static const char* s_MapTiles =
 "WWWWWWWWWWWWWWWWWWWWWWWW"
 ;
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController() { }
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(), spotlight()
+{
+
+}
 
 void Sandbox2D::OnAttach()
 {
@@ -35,25 +38,8 @@ void Sandbox2D::OnAttach()
 
 	m_CameraController.SetPlayerTarget(player1.position);
 
-	m_SpriteSheet = DiloxGE::Texture2D::Create("assets/game/textures/Link.png");
-
-	m_Atlas = DiloxGE::Texture2D::Create("assets/game/textures/LinkTileMap.png");
-
-	m_RoyAtlas = DiloxGE::Texture2D::Create("assets/game/textures/Roy.png");
-
-	m_MapWidth = s_MapWidth;
-
-	m_MapHeight = strlen(s_MapTiles) / s_MapWidth;
-
-	m_GrassTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 15,8.5f }, { 18.2f,18 }, { 1,1 });
-	m_WaterTile = DiloxGE::SubTexture2D::CreateFromCoords(m_Atlas, { 3.7f,20.85f }, { 18.4f,18 }, { 1,1 });
-
-	s_TextureMap['G'] = m_GrassTile;
-	s_TextureMap['W'] = m_WaterTile;
 
 	SetTransforms();
-
-	CreateAnimations();
 }
 
 void Sandbox2D::OnDetach()
@@ -69,8 +55,8 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 
 
 	glm::mat4 transform = glm::translate(glm::mat4(1.0f), player1.position)
-			* glm::rotate(glm::mat4(1.0f), glm::radians(player1.rotation), { 0.0f, 0.0f, 1.0f })
-			* glm::scale(glm::mat4(1.0f), size);
+		* glm::rotate(glm::mat4(1.0f), glm::radians(player1.rotation), { 0.0f, 0.0f, 1.0f })
+		* glm::scale(glm::mat4(1.0f), size);
 
 	CheckInput(ts);
 
@@ -92,51 +78,7 @@ void Sandbox2D::OnUpdate(DiloxGE::Timestep ts)
 
 	//DiloxGE::Renderer2D::DrawQuad(player1.position, player1.scale, player1.animations[animIndex]->Animate(ts), 1.0f, player1.color);
 
-	for (int y = 0; y < m_MapHeight; y++)
-	{
-		for (int x = 0; x < m_MapWidth; x++)
-		{
-			//Le asigno el char al tile
-			auxTile[y][x].tileType = s_MapTiles[x + y * m_MapWidth];
-
-			if (s_TextureMap.find(auxTile[y][x].tileType) != s_TextureMap.end())
-			{
-				tileTexture = s_TextureMap[auxTile[y][x].tileType];
-			}
-			else
-			{
-				tileTexture = m_GrassTile;
-			}
-
-			//Esto deberia ir en una funcion de CreateTileMap
-			auxTile[y][x].position = { m_MapWidth - x - m_MapWidth / 2.0f, m_MapHeight - y - m_MapHeight / 2.0f };
-
-			//DiloxGE::Renderer2D::DrawQuad(auxTile[y][x].position, { 1,1 }, tileTexture, 1.0f, player3.color);
-		}
-	}
-
 	DiloxGE::Renderer2D::EndScene();
-}
-
-void Sandbox2D::CreateAnimations()
-{
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 6, 15 }, { 16, 16 }, { 1, 1 }));
-	animDown.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 7, 15 }, { 16, 16 }, { 1, 1 }));
-
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 2, 15 }, { 16, 16 }, { 1, 1 }));
-	animUp.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 3, 15 }, { 16, 16 }, { 1, 1 }));
-
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 4, 15 }, { 16, 16 }, { 1, 1 }));
-	animLeft.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 5, 15 }, { 16, 16 }, { 1, 1 }));
-
-			
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 15 }, { 16, 16 }, { 1, 1 }));
-	animRight.push_back(DiloxGE::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 15 }, { 16, 16 }, { 1, 1 }));
-
-	player1.animations.push_back(DiloxGE::Animation::Create(animDown, 16));
-	player1.animations.push_back(DiloxGE::Animation::Create(animUp, 16));
-	player1.animations.push_back(DiloxGE::Animation::Create(animLeft, 16));
-	player1.animations.push_back(DiloxGE::Animation::Create(animRight, 16));
 }
 
 void Sandbox2D::SetTransforms()
@@ -161,25 +103,21 @@ void Sandbox2D::CheckInput(DiloxGE::Timestep ts)
 {
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_LEFT))
 	{
-		animIndex = 2;
 		player1.position.x -= playerSpeed * ts;
 	}
 
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_RIGHT))
 	{
-		animIndex = 3;
 		player1.position.x += playerSpeed * ts;
 	}
 
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_UP))
 	{
-		animIndex = 1;
 		player1.position.y += playerSpeed * ts;
 	}
 
 	if (DiloxGE::Input::IsKeyPressed(DGE_KEY_DOWN))
 	{
-		animIndex = 0;
 		player1.position.y -= playerSpeed * ts;
 	}
 }
@@ -210,9 +148,6 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::DragFloat2("Translation2", glm::value_ptr(player2.position), 0.1f);
 
 	ImGui::DragFloat2("Scale2", glm::value_ptr(player2.scale), 0.1f);
-
-	ImGui::DragFloat("Animation Duration Time", &animSpeed, 0.1f);
-
 
 	ImGui::End();
 }

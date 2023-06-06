@@ -43,6 +43,8 @@ public:
 private:
 	DiloxGE::PerspectiveCameraController m_CameraController;
 
+	DiloxGE::SpotLight spotlight;
+
 	Entity player1;
 	Entity player2;
 	Entity player3;
@@ -52,36 +54,9 @@ private:
 	DiloxGE::Ref<DiloxGE::VertexArray> m_SquareVA;
 	DiloxGE::Ref<DiloxGE::Shader> m_FlatColorShader;
 
-	//DiloxGE::Ref<DiloxGE::Texture2D> m_CheckerboardTexture;
-	DiloxGE::Ref<DiloxGE::Texture2D> m_SpriteSheet;
-	//DiloxGE::Ref<DiloxGE::SubTexture2D> m_TextureStairs, m_TextureBarrel, m_TextureTree;
-	DiloxGE::Ref<DiloxGE::Texture2D> m_Atlas;
-	DiloxGE::Ref<DiloxGE::Texture2D> m_RoyAtlas;
-
-	DiloxGE::Ref<DiloxGE::SubTexture2D> m_GrassTile;
-	DiloxGE::Ref<DiloxGE::SubTexture2D> m_WaterTile;
-
-	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animDown;
-	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animUp;
-	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animLeft;
-	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animRight;
-
-	std::vector<DiloxGE::Ref<DiloxGE::SubTexture2D>> animRoy;
-
-	DiloxGE::Ref<DiloxGE::SubTexture2D> tileTexture;
-
-	void CreateAnimations();
 	void SetTransforms();
 	void CheckInput(DiloxGE::Timestep ts);
 
-	int animIndex = 0;
-	float animTime = 0.0f;
-	float animDuration = 3.0f;
-	float animSpeed = 1.0f;
-
 	bool firstInit = false;
 
-	int m_MapWidth, m_MapHeight;
-
-	std::unordered_map<char, DiloxGE::Ref<DiloxGE::SubTexture2D>> s_TextureMap;
 };

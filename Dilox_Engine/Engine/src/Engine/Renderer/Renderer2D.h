@@ -2,6 +2,7 @@
 #include "Engine/Renderer/OrthographicCamera.h"
 #include "Engine/Renderer/Texture.h"
 #include "Engine/Renderer/SubTexture2D.h"
+#include "Engine/Renderer/SpotLight.h"
 
 namespace DiloxGE
 {
@@ -35,6 +36,7 @@ namespace DiloxGE
 
 		static void GetCameraTransform(glm::vec3 cameraPosition);
 
+		static DiloxGE::SpotLight spotlight;
 
 		// Stats
 		struct Statistics

@@ -107,17 +107,7 @@ namespace DiloxGE
 		s_Data.TextureShader = Shader::Create("assets/shaders/Lights.glsl");
 		s_Data.TextureShader->Bind();
 		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
-		s_Data.TextureShader->SetFloat3("u_LightPosition", lightPos);
-		s_Data.TextureShader->SetFloat4("u_LightColor", lightColor);
-		s_Data.TextureShader->SetFloat("u_LightIntensity", 1.0f);
-
-
-		/*s_Data.TextureShader = Shader::Create("assets/shaders/Lights.glsl");
-		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
-		s_Data.TextureShader->SetFloat3("u_LightPosition", lightPos);
-		s_Data.TextureShader->SetFloat3("u_LightColor", lightPos);
-		s_Data.TextureShader->SetFloat("u_LightIntensity", 1.0f);*/
+		
 
 		// Set all texture slots to 0
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -126,6 +116,8 @@ namespace DiloxGE
 		s_Data.QuadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+		s_Data.TextureShader->Unbind();
 	}
 
 	void Renderer2D::Shutdown()
@@ -135,6 +127,7 @@ namespace DiloxGE
 		delete[] s_Data.QuadVertexBufferBase;
 	}
 
+	//Esto esta en el update
 	void Renderer2D::BeginScene(const PerspectiveCamera& camera, glm::mat4 model)
 	{
 		DGE_PROFILE_FUNCTION();
